@@ -1,0 +1,15 @@
+src
+test
+benchmark
+demo
+docs
+coverage
+.nyc_output
+.gitattributes
+.prettierrc.json
+.mocharc.json
+.travis.yml
+tsconfig.json
+tsconfig.build.json
+tslint.json
+webpack.config.js

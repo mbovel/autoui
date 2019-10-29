@@ -1,0 +1,29 @@
+{
+    "name": "semester_project",
+    "version": "0.0.1",
+    "description": "",
+    "author": "",
+    "license": "ISC",
+    "source": "src/index.tsx",
+    "main": "dist/bundle.js",
+    "unpkg": "dist/bundle.umd.js",
+    "dependencies": {
+        "@types/react": "^16.9.3",
+        "@types/react-dom": "^16.9.1",
+        "automerge": "^0.12.1",
+        "react": "^16.9.0",
+        "react-dom": "^16.9.0"
+    },
+    "devDependencies": {
+        "ts-loader": "^6.0.4",
+        "typescript": "^3.6.2",
+        "webpack": "^4.39.3",
+        "webpack-bundle-analyzer": "^3.5.2",
+        "webpack-cli": "^3.3.7"
+    },
+    "scripts": {
+        "build-bundle": "webpack",
+        "build-bundle:watch": "webpack --watch",
+        "build-bundle:analyse": "webpack --profile --json > dist/stats.json && webpack-bundle-analyzer dist/stats.json"
+    }
+}

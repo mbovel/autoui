@@ -2,7 +2,7 @@ import * as React from "react";
 import { UITextInput } from "../model/UI";
 import { WithMethods } from "../model/withMethods";
 
-export const TextInput = ({ value, path, label, onChange }: WithMethods<UITextInput>) => {
+export const TextArea = ({ value, path, label, onChange }: WithMethods<UITextInput>) => {
 	const id = path.join(".");
 	return (
 		<div className="uk-margin">
@@ -10,7 +10,7 @@ export const TextInput = ({ value, path, label, onChange }: WithMethods<UITextIn
 				{label}
 			</label>
 			<div className="uk-form-controls">
-				<input className="uk-input" id={id} type="text" value={value} onChange={onChange} />
+				<textarea className="uk-textarea" id={id} value={value} onChange={onChange} />
 			</div>
 		</div>
 	);

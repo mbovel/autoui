@@ -1,8 +1,8 @@
-export type Action =
+export type UIAction =
 	| {
 			type: "set";
 			path: string[];
-			value: number | string;
+			value: string;
 	  }
 	| {
 			type: "undo";

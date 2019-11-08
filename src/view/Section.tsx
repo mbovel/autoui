@@ -1,11 +1,15 @@
-import { BranchComponent } from "./ComponentsRegistry";
 import * as React from "react";
+import { UISection } from "../model/UI";
+import { WithMethods } from "../model/withMethods";
+import { Auto } from "./Auto";
 
-export const Section: BranchComponent = ({ children, label }) => {
+export const Section = ({ children, title }: WithMethods<UISection>) => {
 	return (
 		<section className="uk-section">
-			<h1>{label}</h1>
-			{children}
+			<h1>{title}</h1>
+			{Object.entries(children).map(([key, ui]) => (
+				<Auto key={key} {...(ui as any)} />
+			))}
 		</section>
 	);
 };

@@ -1,13 +1,8 @@
 module.exports = {
-	mode: 'production',
-	entry: ['./src/index.tsx'],
+	mode: 'development',
+	entry: ['./src/demo.tsx'],
 	resolve: {
 		extensions: ['.js', '.ts', '.tsx', '.json']
-	},
-	output: {
-		filename: 'bundle.min.js',
-		libraryTarget: 'var',
-		library: 'codeoz'
 	},
 	devtool: '#source-map',
 	module: {

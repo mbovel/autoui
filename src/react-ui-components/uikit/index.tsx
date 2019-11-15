@@ -1,9 +1,18 @@
 import { ComponentsMap, Auto } from "../Auto";
 import * as React from "react";
+import { defaultComponents } from "../default";
 
 export const uikitComponents: ComponentsMap = {
+	...defaultComponents,
+	main: ({ content }) => (
+		<div className="uk-section">
+			<div className="uk-container uk-container-small">
+				<Auto ui={content} />
+			</div>
+		</div>
+	),
 	form: ({ content }) => (
-		<form>
+		<form className="uk-form-horizontal uk-margin-large">
 			<Auto ui={content} />
 		</form>
 	),
@@ -21,15 +30,69 @@ export const uikitComponents: ComponentsMap = {
 		</>
 	),
 	textinput: ({ value, path, onChange }) => (
-		<input id={path.join(".")} type="text" value={value} onChange={onChange} />
+		<input
+			className="uk-input"
+			id={path.join(".")}
+			type="text"
+			value={value}
+			onChange={onChange}
+		/>
 	),
 	textarea: ({ value, path, onChange }) => (
 		<textarea className="uk-textarea" id={path.join(".")} value={value} onChange={onChange} />
 	),
+	number: ({ value, path, onChange }) => (
+		<input
+			id={path.join(".")}
+			className="uk-input"
+			type="number"
+			value={value}
+			onChange={onChange}
+		/>
+	),
+	range: ({ value, path, onChange }) => (
+		<input
+			id={path.join(".")}
+			className="uk-range"
+			type="range"
+			value={value}
+			onChange={onChange}
+		/>
+	),
+	toggle: ({ value, path, onChange }) => (
+		<input
+			id={path.join(".")}
+			className="uk-checkbox"
+			type="checkbox"
+			value={value.toString()}
+			onChange={onChange}
+		/>
+	),
+	checkbox: ({ value, path, onChange }) => (
+		<input
+			className="uk-checkbox"
+			id={path.join(".")}
+			type="checkbox"
+			value={value.toString()}
+			onChange={onChange}
+			style={{ marginTop: 5 }}
+		/>
+	),
+	select: ({ value, path, onChange, options }) => (
+		<select className="uk-select" value={value} onChange={onChange}>
+			{Object.entries(options).map(([key, value]) => (
+				<option key={key} value={key}>
+					{value}
+				</option>
+			))}
+		</select>
+	),
 	label: ({ title, content }) => (
-		<label>
-			{title}
-			<Auto ui={content} />
-		</label>
+		<div className="uk-margin">
+			<label className="uk-form-label">{title}</label>
+			<div className="uk-form-controls">
+				<Auto ui={content} />
+			</div>
+		</div>
 	)
 };

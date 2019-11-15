@@ -16,13 +16,35 @@ export const withActions = memoize(
 			case "section":
 			case "label":
 			case "form":
+			case "main":
 				return { ...ui, content: withActions(ui.content, store) };
 			case "textinput":
 			case "textarea":
+			case "select":
 				return {
 					...ui,
 					onChange(arg: ChangeEventArg<string>) {
 						store.dispatch({ type: "set", path: ui.path, value: getValue(arg) });
+					}
+				};
+			case "toggle":
+			case "checkbox":
+				return {
+					...ui,
+					onChange(arg: ChangeEventArg<boolean>) {
+						store.dispatch({ type: "set", path: ui.path, value: !!getValue(arg) });
+					}
+				};
+			case "number":
+			case "range":
+				return {
+					...ui,
+					onChange(arg: ChangeEventArg<number>) {
+						store.dispatch({
+							type: "set",
+							path: ui.path,
+							value: parseInt(getValue(arg) as any)
+						});
 					}
 				};
 			default:
@@ -31,13 +53,17 @@ export const withActions = memoize(
 	}
 );
 
-function getValue(
+function getValue<T>(
 	valueOrEvent:
 		| string
+		| number
+		| boolean
 		| Event
 		| ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
 ) {
 	if (typeof valueOrEvent === "string") return valueOrEvent;
+	if (typeof valueOrEvent === "number") return valueOrEvent;
+	if (typeof valueOrEvent === "boolean") return valueOrEvent;
 	const target = valueOrEvent.target;
 	if (
 		target instanceof HTMLInputElement ||

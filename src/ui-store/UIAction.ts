@@ -2,7 +2,7 @@ export type UIAction =
 	| {
 			type: "set";
 			path: string[];
-			value: string;
+			value: any;
 	  }
 	| {
 			type: "undo";

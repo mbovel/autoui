@@ -35,7 +35,7 @@ export interface UIValue<T> {
 	/**
 	 * Value
 	 */
-	value: string;
+	value: T;
 	/**
 	 * On change handler
 	 */
@@ -46,21 +46,12 @@ export interface UIValue<T> {
 	path: string[];
 }
 
-/**
- * Text field
- *
- * @category Abstract
- */
-export interface UITextField extends UIValue<string> {
-	disabled: boolean;
-}
-
-/**
+/*
  * Text input
  *
  * @category Concrete
  */
-export interface UITextInput extends UITextField {
+export interface UITextInput extends UIValue<string> {
 	type: "textinput";
 }
 
@@ -69,12 +60,33 @@ export interface UITextInput extends UITextField {
  *
  * @category Concrete
  */
-export interface UITextArea extends UITextField {
+export interface UITextArea extends UIValue<string> {
 	type: "textarea";
 }
 
 export interface UIChildren {
 	[key: string]: UIElement;
+}
+
+export interface UISelect extends UIValue<string> {
+	type: "select";
+	options: { [key: string]: string };
+}
+
+export interface UICheckbox extends UIValue<boolean> {
+	type: "checkbox";
+}
+
+export interface UIToggle extends UIValue<boolean> {
+	type: "toggle";
+}
+
+export interface UINumber extends UIValue<number> {
+	type: "number";
+}
+
+export interface UIRange extends UIValue<number> {
+	type: "range";
 }
 
 /**
@@ -101,6 +113,10 @@ export interface UIForm extends UIWrapper {
 	type: "form";
 }
 
+export interface UIMain extends UIWrapper {
+	type: "main";
+}
+
 /**
  * Section
  *
@@ -117,7 +133,20 @@ export interface UISection extends UIWrapper {
 /**
  * Any concrete UI type
  */
-export type UIElement = UITextInput | UITextArea | UISection | UIObject | UIForm | UILabel;
+export type UIElement =
+	| UITextInput
+	| UITextArea
+	| UISection
+	| UIObject
+	| UIForm
+	| UILabel
+	| UIMain
+	| UINumber
+	| UIRange
+	| UISelect
+	| UICheckbox
+	| UIToggle;
+
 export type UIType = UIElement["type"];
 
 export type TypeFromDiscriminatedAttribute<

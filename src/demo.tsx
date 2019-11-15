@@ -3,19 +3,46 @@ import * as Automerge from "automerge";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { AutomergeStore } from "./ui-store/AutomergeStore";
-import { makeJsonToUI } from "./ui-store/jsonToUI";
+import { makeJsonToUI, customJsonUIMapper } from "./ui-store/jsonToUI";
 import { withActions } from "./ui-store/withActions";
+import { uikitComponents } from "./react-ui-components/uikit";
 
 const store = AutomergeStore(
 	Automerge.from({
+		theme: "uikit",
 		firstname: "Matthieu",
 		lastname: "Bovel",
 		details: {
 			email: "mbovel@me.com"
+		},
+		moreDetails: {
+			age: 25,
+			adult: true
 		}
 	})
 );
-const jsonToUI = makeJsonToUI();
+
+export const stupidMapper: customJsonUIMapper = {
+	string(data, path) {
+		if (path.join(".") === "theme") {
+			return {
+				type: "label",
+				title: "Theme",
+				content: {
+					type: "select",
+					value: data,
+					path,
+					options: {
+						uikit: "UIKit",
+						naked: "Naked"
+					}
+				}
+			};
+		}
+	}
+};
+
+const jsonToUI = makeJsonToUI(stupidMapper);
 
 class Head extends React.Component {
 	public render() {
@@ -24,20 +51,16 @@ class Head extends React.Component {
 }
 
 function App() {
-	const [ui, setUI] = React.useState(store.getState());
-	const [theme, setTheme] = React.useState("material");
+	const [data, setData] = React.useState(store.getState());
 	React.useEffect(() => {
-		return store.subscribe(() => setUI(store.getState()));
+		return store.subscribe(() => setData(store.getState()));
 	}, []);
+
+	const ui = withActions(jsonToUI(data), store);
 
 	return (
 		<>
-			<select onChange={e => setTheme(e.target.value)} value={theme}>
-				<option value="ui-kit">UI Kit</option>
-				<option value="material">Material</option>
-				<option value="naked">Naked</option>
-			</select>
-			{theme === "ui-kit" && (
+			{data.theme === "uikit" && (
 				<>
 					<Head>
 						<link
@@ -45,11 +68,11 @@ function App() {
 							href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.2.0/css/uikit.min.css"
 						/>
 					</Head>
-					<Auto ui={withActions(jsonToUI(ui), store)} />
+					<Auto ui={ui} theme={uikitComponents} />
 				</>
 			)}
-			{theme === "material" && <Auto ui={withActions(jsonToUI(ui), store)} />}
-			{theme === "naked" && <Auto ui={withActions(jsonToUI(ui), store)} />}
+			{data.theme === "material" && <Auto ui={ui} />}
+			{data.theme === "naked" && <Auto ui={ui} />}
 		</>
 	);
 }

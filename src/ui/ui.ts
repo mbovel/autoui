@@ -172,6 +172,12 @@ type NonActionPropertyNames<T> = {
 /**
  * Filter a UIElement to keep only non-event properties.
  */
-export type WithoutActions<T> = T extends UIElement | UIChildren
-	? { [P in NonActionPropertyNames<T>]: WithoutActions<T[P]> }
+export type WithoutActions<T> = T extends UIElement
+	? {
+			[P in NonActionPropertyNames<T>]: T[P] extends UIElement
+				? WithoutActions<T[P]>
+				: T[P] extends UIChildren
+				? { [K in keyof T[P]]: WithoutActions<T[P][K]> }
+				: T[P];
+	  }
 	: T;

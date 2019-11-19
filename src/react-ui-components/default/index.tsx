@@ -28,22 +28,22 @@ export const defaultComponents: ComponentsMap = {
 		</>
 	),
 	textinput: ({ value, path, onChange }) => (
-		<input id={path.join(".")} type="text" value={value} onChange={onChange} />
+		<input id={path} type="text" value={value} onChange={onChange} />
 	),
 	textarea: ({ value, path, onChange }) => (
-		<textarea id={path.join(".")} value={value} onChange={onChange} />
+		<textarea id={path} value={value} onChange={onChange} />
 	),
 	number: ({ value, path, onChange }) => (
-		<input id={path.join(".")} type="number" value={value} onChange={onChange} />
+		<input id={path} type="number" value={value} onChange={onChange} />
 	),
 	range: ({ value, path, onChange }) => (
-		<input id={path.join(".")} type="range" value={value} onChange={onChange} />
+		<input id={path} type="range" value={value} onChange={onChange} />
 	),
 	toggle: ({ value, path, onChange }) => (
-		<input id={path.join(".")} type="checkbox" value={value.toString()} onChange={onChange} />
+		<input id={path} type="checkbox" value={value.toString()} onChange={onChange} />
 	),
 	checkbox: ({ value, path, onChange }) => (
-		<input id={path.join(".")} type="checkbox" value={value.toString()} onChange={onChange} />
+		<input id={path} type="checkbox" value={value.toString()} onChange={onChange} />
 	),
 	select: ({ value, path, onChange, options }) => (
 		<select value={value} onChange={onChange}>

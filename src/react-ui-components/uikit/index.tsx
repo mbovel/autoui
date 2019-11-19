@@ -30,38 +30,20 @@ export const uikitComponents: ComponentsMap = {
 		</>
 	),
 	textinput: ({ value, path, onChange }) => (
-		<input
-			className="uk-input"
-			id={path.join(".")}
-			type="text"
-			value={value}
-			onChange={onChange}
-		/>
+		<input className="uk-input" id={path} type="text" value={value} onChange={onChange} />
 	),
 	textarea: ({ value, path, onChange }) => (
-		<textarea className="uk-textarea" id={path.join(".")} value={value} onChange={onChange} />
+		<textarea className="uk-textarea" id={path} value={value} onChange={onChange} />
 	),
 	number: ({ value, path, onChange }) => (
-		<input
-			id={path.join(".")}
-			className="uk-input"
-			type="number"
-			value={value}
-			onChange={onChange}
-		/>
+		<input id={path} className="uk-input" type="number" value={value} onChange={onChange} />
 	),
 	range: ({ value, path, onChange }) => (
-		<input
-			id={path.join(".")}
-			className="uk-range"
-			type="range"
-			value={value}
-			onChange={onChange}
-		/>
+		<input id={path} className="uk-range" type="range" value={value} onChange={onChange} />
 	),
 	toggle: ({ value, path, onChange }) => (
 		<input
-			id={path.join(".")}
+			id={path}
 			className="uk-checkbox"
 			type="checkbox"
 			value={value.toString()}
@@ -71,7 +53,7 @@ export const uikitComponents: ComponentsMap = {
 	checkbox: ({ value, path, onChange }) => (
 		<input
 			className="uk-checkbox"
-			id={path.join(".")}
+			id={path}
 			type="checkbox"
 			value={value.toString()}
 			onChange={onChange}

@@ -1,7 +1,7 @@
 export type UIAction =
 	| {
 			type: "set";
-			path: string[];
+			path: string;
 			value: any;
 	  }
 	| {

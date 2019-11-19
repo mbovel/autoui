@@ -1,27 +1,34 @@
 import { UIElement, WithoutActions } from "../ui/ui";
-import { last, mapValues, concat, memoize, upperFirst, toLower, startCase } from "lodash-es";
-
-type Path = string[];
+import { mapValues, upperFirst, toLower, startCase } from "lodash-es";
+import { memoize } from "./memoize";
 
 export interface customJsonUIMapper {
 	object?(
 		data: object,
-		path: Path,
+		path: string,
 		content: { [key: string]: WithoutActions<UIElement> }
 	): WithoutActions<UIElement> | undefined;
-	string?(data: string, path: Path): WithoutActions<UIElement> | undefined;
-	number?(data: number, path: Path): WithoutActions<UIElement> | undefined;
-	boolean?(data: boolean, path: Path): WithoutActions<UIElement> | undefined;
+	string?(data: string, path: string): WithoutActions<UIElement> | undefined;
+	number?(data: number, path: string): WithoutActions<UIElement> | undefined;
+	boolean?(data: boolean, path: string): WithoutActions<UIElement> | undefined;
 }
 
 function titleCase(str: string): string {
 	return upperFirst(toLower(startCase(str)));
 }
 
+function pathAppend(a: string, b: string) {
+	if (a) return a + "." + b;
+	else return b;
+}
+
+function pathLast(p: string) {
+	return p.slice(p.lastIndexOf(".") + 1);
+}
+
 export function makeJsonToUI(customMapper: customJsonUIMapper = {}) {
-	const jsonToUI = memoize(function(data: any, path: Path = []): WithoutActions<UIElement> {
-		console.log("jsonToUI", data);
-		const key = last(path);
+	const jsonToUI = memoize(function(data: any, path: string = ""): WithoutActions<UIElement> {
+		const key = pathLast(path);
 		if (typeof data === "string") {
 			const custom = customMapper.string && customMapper.string(data, path);
 			if (custom) return custom;
@@ -41,9 +48,7 @@ export function makeJsonToUI(customMapper: customJsonUIMapper = {}) {
 			if (!key) return content;
 			return { type: "label", content, title: titleCase(key) };
 		} else if (typeof data === "object") {
-			const innerContent = mapValues(data, (value, key) =>
-				jsonToUI(value, concat(path, key))
-			);
+			const innerContent = mapValues(data, (d, key) => jsonToUI(d, pathAppend(path, key)));
 			const custom = customMapper.object && customMapper.object(data, path, innerContent);
 			if (custom) return custom;
 			const content = { type: "object", content: innerContent } as const;

@@ -10,7 +10,6 @@ export type ComponentsMap = {
 };
 
 export const Auto = memo(function Auto({ ui, theme }: { ui: UIElement; theme?: ComponentsMap }) {
-	console.log("React", ui);
 	if (theme) {
 		const C = theme[ui.type] as ComponentType<UIElement>;
 		return (

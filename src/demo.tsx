@@ -24,7 +24,7 @@ const store = AutomergeStore(
 
 export const stupidMapper: customJsonUIMapper = {
 	string(data, path) {
-		if (path.join(".") === "theme") {
+		if (path === "theme") {
 			return {
 				type: "label",
 				title: "Theme",

@@ -43,7 +43,7 @@ export interface UIValue<T> {
 	/**
 	 * Path
 	 */
-	path: string[];
+	path: string;
 }
 
 /*

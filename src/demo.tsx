@@ -2,47 +2,60 @@ import { Auto } from "./react-ui-components/Auto";
 import * as Automerge from "automerge";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { AutomergeStore } from "./ui-store/AutomergeStore";
-import { makeJsonToUI, customJsonUIMapper } from "./ui-store/jsonToUI";
-import { withActions } from "./ui-store/withActions";
-import { uikitComponents } from "./react-ui-components/uikit";
+import { AutomergeStore } from "./json-ui-store/AutomergeStore";
+import { customJsonUIMapper } from "./json-ui-store/jsonToUI";
+import { uikitComponents } from "./react-ui-components/uikit/index";
+import { mapStore } from "./store/mapStore";
+import { jsonStateToUI } from "./json-ui-store/jsonStateToUi";
+import { Store } from "./store/Store";
+import { bootstrapComponents } from "./react-ui-components/bootstrap/index";
 
 const store = AutomergeStore(
 	Automerge.from({
-		theme: "uikit",
-		firstname: "Matthieu",
-		lastname: "Bovel",
-		details: {
-			email: "mbovel@me.com"
+		data: {
+			theme: "uikit",
+			firstname: "Matthieu",
+			lastname: "Bovel",
+			details: {
+				email: "mbovel@me.com"
+			},
+			moreDetails: {
+				age: 25,
+				adult: true
+			}
 		},
-		moreDetails: {
-			age: 25,
-			adult: true
-		}
+		touched: {}
 	})
 );
 
 export const stupidMapper: customJsonUIMapper = {
-	string(data, path) {
-		if (path === "theme") {
+	value(data, path, touched) {
+		if (typeof data === "string" && path === "theme") {
 			return {
-				type: "label",
-				title: "Theme",
-				content: {
-					type: "select",
-					value: data,
-					path,
-					options: {
-						uikit: "UIKit",
-						naked: "Naked"
-					}
-				}
+				type: "select",
+				value: data,
+				id: path,
+				touched,
+				options: {
+					uikit: "UIKit",
+					bootstrap: "Bootstrap",
+					naked: "Naked"
+				},
+				errors: []
+			};
+		} else if (typeof data === "number" && path === "moreDetails.age") {
+			return {
+				type: "number",
+				value: data,
+				id: path,
+				touched,
+				errors: data < 18 ? ["You must be an adult to submit this form."] : []
 			};
 		}
 	}
 };
 
-const jsonToUI = makeJsonToUI(stupidMapper);
+const uiStore = mapStore(store, jsonStateToUI, stupidMapper);
 
 class Head extends React.Component {
 	public render() {
@@ -50,13 +63,18 @@ class Head extends React.Component {
 	}
 }
 
-function App() {
-	const [data, setData] = React.useState(store.getState());
+function useStore<S, A>(store: Store<S, A>) {
+	const [state, setState] = React.useState(store.getState());
 	React.useEffect(() => {
-		return store.subscribe(() => setData(store.getState()));
+		return store.subscribe(() => setState(store.getState()));
 	}, []);
+	return state;
+}
 
-	const ui = withActions(jsonToUI(data), store);
+function App() {
+	const data = useStore(store).data;
+	const ui = useStore(uiStore);
+	console.log(ui);
 
 	return (
 		<>
@@ -71,7 +89,17 @@ function App() {
 					<Auto ui={ui} theme={uikitComponents} />
 				</>
 			)}
-			{data.theme === "material" && <Auto ui={ui} />}
+			{data.theme === "bootstrap" && (
+				<>
+					<Head>
+						<link
+							rel="stylesheet"
+							href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css"
+						/>
+					</Head>
+					<Auto ui={ui} theme={bootstrapComponents} />
+				</>
+			)}
 			{data.theme === "naked" && <Auto ui={ui} />}
 		</>
 	);

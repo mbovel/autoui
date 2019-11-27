@@ -7,15 +7,18 @@
 	"source": "src/index.tsx",
 	"main": "dist/bundle.js",
 	"unpkg": "dist/bundle.umd.js",
+	"sideEffects": false,
 	"dependencies": {
 		"@types/lodash-es": "^4.17.3",
 		"@types/react": "^16.9.3",
 		"@types/react-dom": "^16.9.1",
+		"@types/uuid": "^3.4.6",
 		"automerge": "^0.12.1",
 		"lodash-es": "^4.17.15",
 		"react": "^16.9.0",
 		"react-dom": "^16.9.0",
-		"redux": "^4.0.4"
+		"redux": "^4.0.4",
+		"uuid": "^3.3.3"
 	},
 	"devDependencies": {
 		"ts-loader": "^6.0.4",

@@ -18,6 +18,12 @@ export type ChangeEventArg<T> =
 	| Event
 	| React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>;
 
+export function isEvent<T>(
+	arg: ChangeEventArg<T>
+): arg is Event | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> {
+	return (arg as any).target !== undefined;
+}
+
 /**
  * Change event handler
  *
@@ -43,7 +49,12 @@ export interface UIValue<T> {
 	/**
 	 * Path
 	 */
-	path: string;
+	id: string;
+
+	onBlur: () => void;
+	touched: boolean;
+
+	errors: string[];
 }
 
 /*
@@ -62,10 +73,6 @@ export interface UITextInput extends UIValue<string> {
  */
 export interface UITextArea extends UIValue<string> {
 	type: "textarea";
-}
-
-export interface UIChildren {
-	[key: string]: UIElement;
 }
 
 export interface UISelect extends UIValue<string> {
@@ -89,6 +96,14 @@ export interface UIRange extends UIValue<number> {
 	type: "range";
 }
 
+export interface UIDate extends UIValue<Date> {
+	type: "date";
+}
+
+export interface UIChildren {
+	[key: string]: UIElement;
+}
+
 /**
  * Group
  */
@@ -96,8 +111,16 @@ export interface UIGroup {
 	content: UIChildren;
 }
 
-export interface UIObject extends UIGroup {
-	type: "object";
+export interface UIForm extends UIGroup {
+	type: "form";
+}
+
+export interface UISection extends UIGroup {
+	type: "section";
+	/**
+	 * Section's title
+	 */
+	title: string;
 }
 
 export interface UIWrapper {
@@ -109,25 +132,8 @@ export interface UILabel extends UIWrapper {
 	title: string;
 }
 
-export interface UIForm extends UIWrapper {
-	type: "form";
-}
-
 export interface UIMain extends UIWrapper {
 	type: "main";
-}
-
-/**
- * Section
- *
- * @category Concrete
- */
-export interface UISection extends UIWrapper {
-	type: "section";
-	/**
-	 * Section's title
-	 */
-	title: string;
 }
 
 /**
@@ -137,7 +143,6 @@ export type UIElement =
 	| UITextInput
 	| UITextArea
 	| UISection
-	| UIObject
 	| UIForm
 	| UILabel
 	| UIMain
@@ -145,7 +150,8 @@ export type UIElement =
 	| UIRange
 	| UISelect
 	| UICheckbox
-	| UIToggle;
+	| UIToggle
+	| UIDate;
 
 export type UIType = UIElement["type"];
 

@@ -1,17 +1,17 @@
 {
 	"compilerOptions": {
 		"target": "es2020",
-		"module": "commonjs",
+		"module": "esnext",
 		"noImplicitAny": true,
 		"noUnusedLocals": true,
 		"removeComments": true,
-		"resolveJsonModule": true,
 		"preserveConstEnums": true,
 		"sourceMap": true,
 		"declaration": true,
 		"jsx": "react",
 		"strict": true,
-		"outDir": "./dist"
+		"outDir": "./dist",
+		"typeRoots": ["./node_modules/@types", "./node_modules/automerge/@types"]
 	},
 	"include": ["src"]
 }

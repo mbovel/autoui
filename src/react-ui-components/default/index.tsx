@@ -1,5 +1,8 @@
 import { ComponentsMap, Auto } from "../Auto";
 import * as React from "react";
+import { DefaultInput } from "./DefaultInput";
+import { DefaultTextarea } from "./DefaultTextarea";
+import { AutoChildren } from "../AutoChildren";
 
 export const defaultComponents: ComponentsMap = {
 	main: ({ content }) => (
@@ -9,43 +12,25 @@ export const defaultComponents: ComponentsMap = {
 	),
 	form: ({ content }) => (
 		<form>
-			<Auto ui={content} />
+			<AutoChildren content={content} />
 		</form>
 	),
 	section: function Section({ content, title }) {
 		return (
 			<section>
 				<h1>{title}</h1>
-				<Auto ui={content} />
+				<AutoChildren content={content} />
 			</section>
 		);
 	},
-	object: ({ content }) => (
-		<>
-			{Object.entries(content).map(([key, ui]) => (
-				<Auto key={key} ui={ui} />
-			))}
-		</>
-	),
-	textinput: ({ value, path, onChange }) => (
-		<input id={path} type="text" value={value} onChange={onChange} />
-	),
-	textarea: ({ value, path, onChange }) => (
-		<textarea id={path} value={value} onChange={onChange} />
-	),
-	number: ({ value, path, onChange }) => (
-		<input id={path} type="number" value={value} onChange={onChange} />
-	),
-	range: ({ value, path, onChange }) => (
-		<input id={path} type="range" value={value} onChange={onChange} />
-	),
-	toggle: ({ value, path, onChange }) => (
-		<input id={path} type="checkbox" value={value.toString()} onChange={onChange} />
-	),
-	checkbox: ({ value, path, onChange }) => (
-		<input id={path} type="checkbox" value={value.toString()} onChange={onChange} />
-	),
-	select: ({ value, path, onChange, options }) => (
+	textinput: ui => <DefaultInput type="text" ui={ui} />,
+	number: ui => <DefaultInput type="number" ui={ui} />,
+	range: ui => <DefaultInput type="range" ui={ui} />,
+	toggle: ui => <DefaultInput type="checkbox" ui={ui} />,
+	checkbox: ui => <DefaultInput type="checkbox" ui={ui} />,
+	textarea: ui => <DefaultTextarea ui={ui} />,
+	date: ui => <DefaultInput type="date" ui={ui} />,
+	select: ({ value, id: path, onChange, options }) => (
 		<select value={value} onChange={onChange}>
 			{Object.entries(options).map(([key, value]) => (
 				<option key={key} value={key}>
@@ -55,9 +40,10 @@ export const defaultComponents: ComponentsMap = {
 		</select>
 	),
 	label: ({ title, content }) => (
-		<label>
-			{title}
-			<Auto ui={content} />
-		</label>
+		<p>
+			<label>
+				{title} <Auto ui={content} />
+			</label>
+		</p>
 	)
 };

@@ -1,10 +1,13 @@
 module.exports = {
-	mode: 'development',
+	mode: 'production',
 	entry: ['./src/demo.tsx'],
 	resolve: {
 		extensions: ['.js', '.ts', '.tsx', '.json']
 	},
 	devtool: '#source-map',
+	optimization: {
+		usedExports: true,
+	},
 	module: {
 		rules: [
 			{

@@ -1,8 +1,12 @@
 export type UIAction =
 	| {
 			type: "set";
-			path: string;
+			id: string;
 			value: any;
+	  }
+	| {
+			type: "touch";
+			id: string;
 	  }
 	| {
 			type: "undo";

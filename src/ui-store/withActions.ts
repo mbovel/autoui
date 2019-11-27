@@ -1,23 +1,21 @@
-import { UIElement, WithoutActions, ChangeEventArg } from "../ui/ui";
-import { mapValues } from "lodash-es";
-import { ChangeEvent } from "react";
+import { UIElement, WithoutActions, ChangeEventArg, isEvent } from "../ui/ui";
+import { mapValues, identity } from "lodash-es";
 import { UIAction } from "./UIAction";
 import { Store } from "../store/Store";
-import { memoize } from "./memoize";
+import { memoize } from "../utils/memoize";
 
 export const withActions = memoize(function(
 	ui: WithoutActions<UIElement>,
 	store: Store<any, UIAction>
 ): UIElement {
 	switch (ui.type) {
-		case "object":
+		case "section":
+		case "form":
 			return {
 				...ui,
 				content: mapValues(ui.content, value => withActions(value, store))
 			};
-		case "section":
 		case "label":
-		case "form":
 		case "main":
 			return { ...ui, content: withActions(ui.content, store) };
 		case "textinput":
@@ -26,7 +24,10 @@ export const withActions = memoize(function(
 			return {
 				...ui,
 				onChange(arg: ChangeEventArg<string>) {
-					store.dispatch({ type: "set", path: ui.path, value: getValue(arg) });
+					store.dispatch({ type: "set", id: ui.id, value: getValue(arg, identity) });
+				},
+				onBlur() {
+					store.dispatch({ type: "touch", id: ui.id });
 				}
 			};
 		case "toggle":
@@ -34,7 +35,10 @@ export const withActions = memoize(function(
 			return {
 				...ui,
 				onChange(arg: ChangeEventArg<boolean>) {
-					store.dispatch({ type: "set", path: ui.path, value: !!getValue(arg) });
+					store.dispatch({ type: "set", id: ui.id, value: getValue(arg, s => !!s) });
+				},
+				onBlur() {
+					store.dispatch({ type: "touch", id: ui.id });
 				}
 			};
 		case "number":
@@ -44,9 +48,26 @@ export const withActions = memoize(function(
 				onChange(arg: ChangeEventArg<number>) {
 					store.dispatch({
 						type: "set",
-						path: ui.path,
-						value: parseInt(getValue(arg) as any)
+						id: ui.id,
+						value: getValue(arg, parseInt)
 					});
+				},
+				onBlur() {
+					store.dispatch({ type: "touch", id: ui.id });
+				}
+			};
+		case "date":
+			return {
+				...ui,
+				onChange(arg: ChangeEventArg<Date>) {
+					store.dispatch({
+						type: "set",
+						id: ui.id,
+						value: getValue(arg, s => new Date(s))
+					});
+				},
+				onBlur() {
+					store.dispatch({ type: "touch", id: ui.id });
 				}
 			};
 		default:
@@ -54,24 +75,16 @@ export const withActions = memoize(function(
 	}
 });
 
-function getValue<T>(
-	valueOrEvent:
-		| string
-		| number
-		| boolean
-		| Event
-		| ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-) {
-	if (typeof valueOrEvent === "string") return valueOrEvent;
-	if (typeof valueOrEvent === "number") return valueOrEvent;
-	if (typeof valueOrEvent === "boolean") return valueOrEvent;
-	const target = valueOrEvent.target;
+function getValue<T>(arg: ChangeEventArg<T>, parse: (text: string) => T): T {
+	if (!isEvent(arg)) return arg;
+
+	const target = arg.target;
 	if (
 		target instanceof HTMLInputElement ||
 		target instanceof HTMLTextAreaElement ||
 		target instanceof HTMLSelectElement
 	) {
-		return target.value;
+		return parse(target.value);
 	}
 	throw new Error("Event's target should be an input or a textarea.");
 }

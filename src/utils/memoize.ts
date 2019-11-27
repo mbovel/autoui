@@ -1,4 +1,4 @@
-import { upperFirst, isObject } from "lodash-es";
+import { isObject } from "lodash-es";
 
 function arrayShallowEqual<A extends unknown[]>(a: A, b: A): boolean {
 	if (a.length !== b.length) return false;
@@ -36,18 +36,11 @@ export function memoize<H, T extends unknown[], R>(
 	cache: Cache<H, T, R> = new DefaultCache(),
 	tailEqual: (a: T, b: T) => boolean = arrayShallowEqual
 ): typeof fn {
-	const name = "memoized" + upperFirst(fn.name);
-	const memoized = {
-		// Hack to give a dynamic name to the created function
-		// See https://stackoverflow.com/a/41854075
-		[name]: function(head: H, ...tail: T) {
-			const cachedResult = cache.get(head);
-			if (cachedResult && tailEqual(tail, cachedResult.tail)) return cachedResult.result;
-			const result = fn(head, ...tail);
-			cache.set(head, { tail, result });
-			return result;
-		}
+	return function(head, ...tail) {
+		const cachedResult = cache.get(head);
+		if (cachedResult && tailEqual(tail, cachedResult.tail)) return cachedResult.result;
+		const result = fn(head, ...tail);
+		cache.set(head, { tail, result });
+		return result;
 	};
-
-	return memoized[name];
 }

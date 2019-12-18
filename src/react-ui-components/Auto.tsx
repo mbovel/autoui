@@ -5,9 +5,7 @@ import * as React from "react";
 
 export const ThemeContext: React.Context<ComponentsMap> = createContext(defaultComponents);
 
-export type ComponentsMap = {
-	[K in UIType]: ComponentType<UIElementFromType<K>>;
-};
+export type ComponentsMap = { [K in UIType]: ComponentType<UIElementFromType<K>> };
 
 export const Auto = memo(function Auto({ ui, theme }: { ui: UIElement; theme?: ComponentsMap }) {
 	if (theme) {

@@ -2,6 +2,7 @@
 	"compilerOptions": {
 		"target": "es2020",
 		"module": "esnext",
+		"moduleResolution": "node",
 		"noImplicitAny": true,
 		"noUnusedLocals": true,
 		"removeComments": true,
@@ -10,8 +11,7 @@
 		"declaration": true,
 		"jsx": "react",
 		"strict": true,
-		"outDir": "./dist",
-		"typeRoots": ["./node_modules/@types", "./node_modules/automerge/@types"]
+		"outDir": "./dist"
 	},
-	"include": ["src"]
+	"include": ["src", "demo/demo.tsx"]
 }

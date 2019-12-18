@@ -6,13 +6,13 @@
  */
 
 module.exports = {
-  title: 'My Site',
-  tagline: 'The tagline of my site',
-  url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
+  title: 'AllUI',
+  tagline: 'A Javascript library to build user interfaces from schemas',
+  url: 'https://mbovel.github.io/allui',
+  baseUrl: '/allui/',
   favicon: 'img/favicon.ico',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'mbovel', // Usually your GitHub org/user name.
+  projectName: 'allui', // Usually your repo name.
   themeConfig: {
     navbar: {
       title: 'My Site',
@@ -21,8 +21,7 @@ module.exports = {
         src: 'img/logo.svg',
       },
       links: [
-        {to: 'docs/doc1', label: 'Docs', position: 'left'},
-        {to: 'blog', label: 'Blog', position: 'left'},
+        { to: 'docs/motivation', label: 'Docs', position: 'left' },
         {
           href: 'https://github.com/facebook/docusaurus',
           label: 'GitHub',
@@ -38,35 +37,13 @@ module.exports = {
           items: [
             {
               label: 'Docs',
-              to: 'docs/doc1',
-            },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            },
-          ],
-        },
-        {
-          title: 'Social',
-          items: [
-            {
-              label: 'Blog',
-              to: 'blog',
+              to: 'docs/motivation',
             },
           ],
         },
       ],
-      logo: {
-        alt: 'Facebook Open Source Logo',
-        src: 'https://docusaurus.io/img/oss_logo.png',
-        href: 'https://opensource.facebook.com/',
-      },
-      copyright: `Copyright © ${new Date().getFullYear()} Facebook, Inc. Built with Docusaurus.`,
+      logo: undefined,
+      copyright: `Copyright © ${new Date().getFullYear()} Matthieu Bovel. Built with Docusaurus.`,
     },
   },
   presets: [

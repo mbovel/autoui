@@ -172,7 +172,7 @@ type NonActionPropertyNames<T> = {
 		? ReturnType<T[K]> extends void
 			? never
 			: K
-		: K;
+		: K
 }[keyof T];
 
 /**
@@ -184,6 +184,6 @@ export type WithoutActions<T> = T extends UIElement
 				? WithoutActions<T[P]>
 				: T[P] extends UIChildren
 				? { [K in keyof T[P]]: WithoutActions<T[P][K]> }
-				: T[P];
+				: T[P]
 	  }
 	: T;

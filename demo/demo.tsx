@@ -1,14 +1,15 @@
-import { Auto } from "./react-ui-components/Auto";
+import { Auto } from "../src/react-ui-components/Auto";
 import * as Automerge from "automerge";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { AutomergeStore } from "./json-ui-store/AutomergeStore";
-import { customJsonUIMapper } from "./json-ui-store/jsonToUI";
-import { uikitComponents } from "./react-ui-components/uikit/index";
-import { mapStore } from "./store/mapStore";
-import { jsonStateToUI } from "./json-ui-store/jsonStateToUi";
-import { Store } from "./store/Store";
-import { bootstrapComponents } from "./react-ui-components/bootstrap/index";
+import { AutomergeStore } from "../src/json-ui-store/AutomergeStore";
+import { customJsonUIMapper } from "../src/json-ui-store/jsonToUI";
+import { uikitComponents } from "../src/react-ui-components/uikit/index";
+import { mapStore } from "../src/store/mapStore";
+import { jsonStateToUI } from "../src/json-ui-store/jsonStateToUi";
+import { Store } from "../src/store/Store";
+import { bootstrapComponents } from "../src/react-ui-components/bootstrap/index";
+import { FunctionComponent } from "react";
 
 const store = AutomergeStore(
 	Automerge.from({
@@ -71,13 +72,25 @@ function useStore<S, A>(store: Store<S, A>) {
 	return state;
 }
 
+const CoolDiv: FunctionComponent = React.memo(({ children }) => (
+	<div className="cool">{children}</div>
+));
+
+const foo = (
+	<CoolDiv>
+		<CoolDiv>
+			<CoolDiv>Hello</CoolDiv>
+		</CoolDiv>
+	</CoolDiv>
+);
+
 function App() {
 	const data = useStore(store).data;
 	const ui = useStore(uiStore);
-	console.log(ui);
 
 	return (
 		<>
+			{foo}
 			{data.theme === "uikit" && (
 				<>
 					<Head>

@@ -1,62 +1,81 @@
-import { Auto } from "../src/react-ui-components/Auto";
 import * as Automerge from "automerge";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { AutomergeStore } from "../src/json-ui-store/AutomergeStore";
-import { customJsonUIMapper } from "../src/json-ui-store/jsonToUI";
-import { uikitComponents } from "../src/react-ui-components/uikit/index";
-import { mapStore } from "../src/store/mapStore";
-import { jsonStateToUI } from "../src/json-ui-store/jsonStateToUi";
-import { Store } from "../src/store/Store";
-import { bootstrapComponents } from "../src/react-ui-components/bootstrap/index";
-import { FunctionComponent } from "react";
+import { useReducer, Reducer } from "react";
+import { mergeMappers } from "../src/autoform/Mapper";
+import { defaultComponents } from "../src/components/default";
+import { valueProps, defaultMapper } from "../src/autoform/defaultMapper";
+import { isString, isNumber, mapValues } from "lodash-es";
+import { Validator } from "../src/autoform/Validator";
+import { automergeReducer } from "../src/autoform/automergeReducer";
+import { Action } from "../src/autoform/Action";
+import { AutoForm } from "../src/autoform/AutoForm";
+import { bootstrapComponents } from "../src/components/bootstrap";
+import { uikitComponents } from "../src/components/uikit";
+import { pathAppend } from "../src/autoform/utils";
 
-const store = AutomergeStore(
-	Automerge.from({
-		data: {
-			theme: "uikit",
-			firstname: "Matthieu",
-			lastname: "Bovel",
-			details: {
-				email: "mbovel@me.com"
-			},
-			moreDetails: {
-				age: 25,
-				adult: true
-			}
-		},
-		touched: {}
-	})
-);
+const themes = {
+	uikit: {
+		name: "UIKit",
+		stylesheet: "https://cdnjs.cloudflare.com/ajax/libs/uikit/3.2.0/css/uikit.min.css",
+		components: uikitComponents
+	},
+	bootstrap: {
+		name: "Bootstrap",
+		stylesheet: "https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css",
+		components: bootstrapComponents
+	},
+	default: {
+		name: "Default",
+		stylesheet: undefined,
+		components: defaultComponents
+	}
+} as const;
 
-export const stupidMapper: customJsonUIMapper = {
-	value(data, path, touched) {
-		if (typeof data === "string" && path === "theme") {
-			return {
-				type: "select",
-				value: data,
-				id: path,
-				touched,
-				options: {
-					uikit: "UIKit",
-					bootstrap: "Bootstrap",
-					naked: "Naked"
-				},
-				errors: []
-			};
-		} else if (typeof data === "number" && path === "moreDetails.age") {
-			return {
-				type: "number",
-				value: data,
-				id: path,
-				touched,
-				errors: data < 18 ? ["You must be an adult to submit this form."] : []
-			};
+const options = mapValues(themes, _ => _.name);
+
+export const myMapper = mergeMappers(context => {
+	const { data, path, UI } = context;
+	if (isString(data) && path === "theme") {
+		return (
+			<UI.label title="Theme">
+				<UI.select {...valueProps(context)} options={options} />
+			</UI.label>
+		);
+	}
+}, defaultMapper);
+
+export const myValidator: Validator = (data, path) => {
+	if (isNumber(data) && path === "moreDetails.age") {
+		if (data < 18) {
+			return [
+				{
+					path,
+					type: "error",
+					message: "You must be an adult to submit this form."
+				}
+			];
+		} else if (data < 25) {
+			return [
+				{
+					path,
+					type: "warning",
+					message: "You're still a bit young, but that's ok."
+				}
+			];
+		}
+	} else if (path === "") {
+		if (data.firstname === "Matthieu" && data.lastname === "Bovel") {
+			return [
+				{
+					path: pathAppend(path, "lastname"),
+					type: "info",
+					message: "You have the same name as I!"
+				}
+			];
 		}
 	}
 };
-
-const uiStore = mapStore(store, jsonStateToUI, stupidMapper);
 
 class Head extends React.Component {
 	public render() {
@@ -64,56 +83,45 @@ class Head extends React.Component {
 	}
 }
 
-function useStore<S, A>(store: Store<S, A>) {
-	const [state, setState] = React.useState(store.getState());
-	React.useEffect(() => {
-		return store.subscribe(() => setState(store.getState()));
-	}, []);
-	return state;
-}
-
-const CoolDiv: FunctionComponent = React.memo(({ children }) => (
-	<div className="cool">{children}</div>
-));
-
-const foo = (
-	<CoolDiv>
-		<CoolDiv>
-			<CoolDiv>Hello</CoolDiv>
-		</CoolDiv>
-	</CoolDiv>
-);
+const initialState = Automerge.from({
+	data: {
+		theme: "uikit" as keyof typeof themes,
+		firstname: "Matthieu",
+		lastname: "Bovel",
+		details: {
+			email: "mbovel@me.com"
+		},
+		moreDetails: {
+			age: 25,
+			adult: true
+		}
+	},
+	touched: {}
+});
 
 function App() {
-	const data = useStore(store).data;
-	const ui = useStore(uiStore);
-
+	const [state, dispatch] = useReducer(
+		automergeReducer as Reducer<typeof initialState, Action>,
+		initialState
+	);
+	const { components, stylesheet } = themes[state.data.theme];
 	return (
 		<>
-			{foo}
-			{data.theme === "uikit" && (
-				<>
-					<Head>
-						<link
-							rel="stylesheet"
-							href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.2.0/css/uikit.min.css"
-						/>
-					</Head>
-					<Auto ui={ui} theme={uikitComponents} />
-				</>
+			{stylesheet && (
+				<Head>
+					<link rel="stylesheet" href={stylesheet} />
+				</Head>
 			)}
-			{data.theme === "bootstrap" && (
-				<>
-					<Head>
-						<link
-							rel="stylesheet"
-							href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css"
-						/>
-					</Head>
-					<Auto ui={ui} theme={bootstrapComponents} />
-				</>
-			)}
-			{data.theme === "naked" && <Auto ui={ui} />}
+			<AutoForm
+				data={state.data}
+				touched={state.touched}
+				UI={components}
+				dispatch={dispatch}
+				mapper={myMapper}
+				validator={myValidator}
+				path=""
+				feedback={myValidator(state.data, "")}
+			/>
 		</>
 	);
 }

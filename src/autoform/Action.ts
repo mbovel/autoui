@@ -1,4 +1,4 @@
-export type UIAction =
+export type Action =
 	| {
 			type: "set";
 			id: string;

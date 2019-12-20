@@ -10,7 +10,7 @@
     "sideEffects": false,
     "dependencies": {
         "@types/lodash-es": "^4.17.3",
-        "@types/react": "^16.9.16",
+        "@types/react": "^16.9.17",
         "@types/react-dom": "^16.9.4",
         "@types/uuid": "^3.4.6",
         "automerge": "^0.12.1",
@@ -23,13 +23,13 @@
     },
     "devDependencies": {
         "copyfiles": "^2.1.1",
-        "csstype": "^2.6.7",
-        "npm-check-updates": "^3.2.2",
+        "csstype": "^2.6.8",
+        "npm-check-updates": "^4.0.1",
         "npm-run-all": "^4.1.5",
         "ts-loader": "^6.2.1",
-        "typedoc": "^0.15.4",
+        "typedoc": "^0.15.5",
         "typescript": "^3.7.3",
-        "webpack": "^4.41.2",
+        "webpack": "^4.41.4",
         "webpack-bundle-analyzer": "^3.6.0",
         "webpack-cli": "^3.3.10"
     },

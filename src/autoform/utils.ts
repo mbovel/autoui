@@ -1,4 +1,14 @@
-import { isUndefined, isString, isNumber, isBoolean, isNull, isDate } from "lodash-es";
+import {
+	isUndefined,
+	isString,
+	isNumber,
+	isBoolean,
+	isNull,
+	isDate,
+	upperFirst,
+	toLower,
+	startCase
+} from "lodash-es";
 
 export function pathAppend(a: string, b: string) {
 	if (a) return a + "." + b;
@@ -23,6 +33,10 @@ export function pathTail(p: string) {
 
 export function isDefined<S>(value: S | undefined): value is S {
 	return !isUndefined(value);
+}
+
+export function titleCase(str: string): string {
+	return upperFirst(toLower(startCase(str)));
 }
 
 export type Primitive = string | number | boolean | null | Date;

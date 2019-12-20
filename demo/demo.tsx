@@ -10,7 +10,6 @@ import { Validator } from "../src/autoform/Validator";
 import { automergeReducer } from "../src/autoform/automergeReducer";
 import { Action } from "../src/autoform/Action";
 import { AutoForm } from "../src/autoform/AutoForm";
-import { bootstrapComponents } from "../src/components/bootstrap";
 import { uikitComponents } from "../src/components/uikit";
 import { pathAppend } from "../src/autoform/utils";
 
@@ -19,11 +18,6 @@ const themes = {
 		name: "UIKit",
 		stylesheet: "https://cdnjs.cloudflare.com/ajax/libs/uikit/3.2.0/css/uikit.min.css",
 		components: uikitComponents
-	},
-	bootstrap: {
-		name: "Bootstrap",
-		stylesheet: "https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css",
-		components: bootstrapComponents
 	},
 	default: {
 		name: "Default",
@@ -38,9 +32,9 @@ export const myMapper = mergeMappers(context => {
 	const { data, path, UI } = context;
 	if (isString(data) && path === "theme") {
 		return (
-			<UI.label title="Theme">
-				<UI.select {...valueProps(context)} options={options} />
-			</UI.label>
+			<UI.Label title="Theme">
+				<UI.Select {...valueProps(context)} options={options} />
+			</UI.Label>
 		);
 	}
 }, defaultMapper);
@@ -104,7 +98,7 @@ function App() {
 		automergeReducer as Reducer<typeof initialState, Action>,
 		initialState
 	);
-	const { components, stylesheet } = themes[state.data.theme];
+	const { components: UI, stylesheet } = themes[state.data.theme];
 	return (
 		<>
 			{stylesheet && (
@@ -112,16 +106,19 @@ function App() {
 					<link rel="stylesheet" href={stylesheet} />
 				</Head>
 			)}
-			<AutoForm
-				data={state.data}
-				touched={state.touched}
-				UI={components}
-				dispatch={dispatch}
-				mapper={myMapper}
-				validator={myValidator}
-				path=""
-				feedback={myValidator(state.data, "")}
-			/>
+
+			<UI.Main>
+				<AutoForm
+					data={state.data}
+					touched={state.touched}
+					UI={UI}
+					dispatch={dispatch}
+					mapper={myMapper}
+					validator={myValidator}
+					path=""
+					feedback={myValidator(state.data, "")}
+				/>
+			</UI.Main>
 		</>
 	);
 }

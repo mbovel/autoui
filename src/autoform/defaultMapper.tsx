@@ -1,4 +1,4 @@
-import { pathLast, Primitive, isPrimitive } from "./utils";
+import { pathLast, Primitive, isPrimitive, titleCase } from "./utils";
 import * as React from "react";
 import { getEventValue } from "../components/ChangeEvent";
 import { identity, isString, isNumber, isBoolean, isNull, isDate, isObject } from "lodash-es";
@@ -12,21 +12,19 @@ export const defaultMapper: Mapper = ctx => {
 	const label = pathLast(path);
 	if (isPrimitive(data)) {
 		let field = null;
-		if (isString(ctx.data)) field = <UI.textinput {...valueProps(ctx)} />;
-		else if (isNumber(data)) field = <UI.number {...valueProps(ctx)} />;
-		else if (isBoolean(data)) field = <UI.checkbox {...valueProps(ctx)} />;
-		else if (isDate(data)) field = <UI.date {...valueProps(ctx)} />;
-		return label ? <UI.label title={label}>{field}</UI.label> : field;
+		if (isString(ctx.data)) field = <UI.TextInput {...valueProps(ctx)} />;
+		else if (isNumber(data)) field = <UI.Number {...valueProps(ctx)} />;
+		else if (isBoolean(data)) field = <UI.Checkbox {...valueProps(ctx)} />;
+		else if (isDate(data)) field = <UI.Date {...valueProps(ctx)} />;
+		return label ? <UI.Label title={titleCase(label)}>{field}</UI.Label> : field;
 	} else if (isObject(data)) {
 		const children = Object.keys(data).map(key => (
 			<AutoForm {...childContext(ctx, key)} key={key} />
 		));
 		return label ? (
-			<UI.section title={label}>{children}</UI.section>
+			<UI.Section title={titleCase(label)}>{children}</UI.Section>
 		) : (
-			<UI.main>
-				<UI.form>{children}</UI.form>
-			</UI.main>
+			<UI.Form>{children}</UI.Form>
 		);
 	}
 	throw new Error("Data type not supported yet.");

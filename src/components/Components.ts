@@ -73,20 +73,20 @@ export interface Components {
 	 *
 	 * @category Concrete
 	 */
-	textinput: ComponentType<ValueProps<string>>;
+	TextInput: ComponentType<ValueProps<string>>;
 
 	/*
 	 * Text area
 	 *
 	 * @category Concrete
 	 */
-	textarea: ComponentType<ValueProps<string>>;
-	select: ComponentType<ValueProps<string> & { options: { [key: string]: string } }>;
-	number: ComponentType<ValueProps<number>>;
-	checkbox: ComponentType<ValueProps<boolean>>;
-	date: ComponentType<ValueProps<Date>>;
-	label: ComponentType<LabelProps>;
-	section: ComponentType<SectionProps>;
-	main: ComponentType<MainProps>;
-	form: ComponentType<FormProps>;
+	TextArea: ComponentType<ValueProps<string>>;
+	Select: ComponentType<ValueProps<string> & { options: { [key: string]: string } }>;
+	Number: ComponentType<ValueProps<number>>;
+	Checkbox: ComponentType<ValueProps<boolean>>;
+	Date: ComponentType<ValueProps<Date>>;
+	Label: ComponentType<LabelProps>;
+	Section: ComponentType<SectionProps>;
+	Main: ComponentType<MainProps>;
+	Form: ComponentType<FormProps>;
 }

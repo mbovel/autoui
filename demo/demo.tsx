@@ -2,16 +2,18 @@ import * as Automerge from "automerge";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { useReducer, Reducer } from "react";
-import { mergeMappers } from "../src/autoform/Mapper";
-import { defaultComponents } from "../src/components/default";
+import { mergeRenderers } from "../src/autoform/Renderer";
+import { defaultComponents } from "../src/ui/default";
 import { valueProps, defaultMapper } from "../src/autoform/defaultMapper";
 import { isString, isNumber, mapValues } from "lodash-es";
 import { Validator } from "../src/autoform/Validator";
-import { automergeReducer } from "../src/autoform/automergeReducer";
-import { Action } from "../src/autoform/Action";
-import { AutoForm } from "../src/autoform/AutoForm";
-import { uikitComponents } from "../src/components/uikit";
+import { automergeReducer } from "../src/autoform/state/automergeReducer";
+import { Action } from "../src/autoform/state/Action";
+import { AutoForm } from "../src/autoform/JsonForm";
+import { uikitComponents } from "../src/ui/uikit";
 import { pathAppend } from "../src/autoform/utils";
+import { Schema } from "../src/autoform/schema/Schema";
+import { Components } from "../src/ui/Components";
 
 const themes = {
 	uikit: {
@@ -28,48 +30,17 @@ const themes = {
 
 const options = mapValues(themes, _ => _.name);
 
-export const myMapper = mergeMappers(context => {
-	const { data, path, UI } = context;
-	if (isString(data) && path === "theme") {
-		return (
-			<UI.Label title="Theme">
-				<UI.Select {...valueProps(context)} options={options} />
-			</UI.Label>
-		);
-	}
-}, defaultMapper);
-
-export const myValidator: Validator = (data, path) => {
-	if (isNumber(data) && path === "moreDetails.age") {
-		if (data < 18) {
-			return [
-				{
-					path,
-					type: "error",
-					message: "You must be an adult to submit this form."
-				}
-			];
-		} else if (data < 25) {
-			return [
-				{
-					path,
-					type: "warning",
-					message: "You're still a bit young, but that's ok."
-				}
-			];
+function getSchema(UI: Components): Schema {
+	return {
+		type: "map",
+		properties: {
+			theme: {
+				type: "string",
+				render: props => <UI.Select {...valueProps(context)} options={options} />
+			}
 		}
-	} else if (path === "") {
-		if (data.firstname === "Matthieu" && data.lastname === "Bovel") {
-			return [
-				{
-					path: pathAppend(path, "lastname"),
-					type: "info",
-					message: "You have the same name as I!"
-				}
-			];
-		}
-	}
-};
+	};
+}
 
 class Head extends React.Component {
 	public render() {

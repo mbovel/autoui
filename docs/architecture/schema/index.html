@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="generator" content="Docusaurus">
+
+<script type="text/javascript">/*<![CDATA[*/window.__chunkMapping={"17896441":["/allui/17896441.99f2087f.js"],"main":["/allui/main.a5632039.js"],"0b1ac180":["/allui/0b1ac180.3f1a4aa0.js"],"109f1412":["/allui/109f1412.9de18339.js"],"161b43e9":["/allui/161b43e9.a7467f9b.js"],"1be78505":[],"20bcb050":["/allui/20bcb050.dee2a7e2.js"],"2838c864":["/allui/2838c864.512f32bb.js"],"3b8c55ea":["/allui/3b8c55ea.d9889689.js"],"93bf987a":["/allui/93bf987a.ddcb08b5.js"],"9a603c57":["/allui/9a603c57.3718a842.js"],"c4f5d8e4":["/allui/c4f5d8e4.971ffbef.js"],"d989258b":["/allui/d989258b.f56208e0.js"],"e591aece":["/allui/e591aece.12212b98.js"]};/*]]>*/</script>
+
+<title data-react-helmet="true">Schema</title>
+
+<meta data-react-helmet="true" http-equiv="x-ua-compatible" content="ie=edge"/><meta data-react-helmet="true" property="og:title" content="AllUI · A Javascript library to build user interfaces from schemas"/><meta data-react-helmet="true" name="twitter:card" content="summary"/><meta data-react-helmet="true" name="description" content="[TODO]"/><meta data-react-helmet="true" property="og:description" content="[TODO]"/><meta data-react-helmet="true" property="og:url" content="https://mbovel.github.io/allui/allui/docs/architecture/schema"/>
+
+<link data-react-helmet="true" rel="shortcut icon" href="/allui/img/favicon.ico"/>
+
+
+<link rel="stylesheet" type="text/css" href="/allui/styles.4ba2635d.css" />
+
+</head>
+<body >
+<script type="text/javascript">(function() {
+  function setDataThemeAttribute(theme) {
+    document.querySelector('html').setAttribute('data-theme', theme);
+  }
+  
+  var preferDarkQuery = '(prefers-color-scheme: dark)';
+  var mql = window.matchMedia(preferDarkQuery);
+  var supportsColorSchemeQuery = mql.media === preferDarkQuery;
+  var localStorageTheme = null;
+  try {
+    localStorageTheme = localStorage.getItem('theme');
+  } catch (err) {}
+  var localStorageExists = localStorageTheme !== null;
+
+  if (localStorageExists) {
+    setDataThemeAttribute(localStorageTheme);
+  } else if (supportsColorSchemeQuery && mql.matches) {
+    setDataThemeAttribute('dark');
+  }
+})();</script>
+<div id="__docusaurus">
+<nav class="navbar navbar--light navbar--fixed-top"><div class="navbar__inner"><div class="navbar__items"><div aria-label="Navigation bar toggle" class="navbar__toggle" role="button" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" role="img" focusable="false"><title>Menu</title><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></div><a aria-current="page" class="navbar__brand active" href="/allui/"><img class="navbar__logo" src="/allui/img/logo.svg" alt="My Site Logo"/><strong class="">My Site</strong></a><a class="navbar__item navbar__link" href="/allui/docs/motivation">Docs</a></div><div class="navbar__items navbar__items--right"><a class="navbar__item navbar__link" target="_blank" rel="noopener noreferrer" href="https://github.com/facebook/docusaurus">GitHub</a><div class="react-toggle react-toggle--disabled displayOnlyInLargeViewport_1gtM"><div class="react-toggle-track"><div class="react-toggle-track-check"><span class="toggle_keGJ moon_1gwN"></span></div><div class="react-toggle-track-x"><span class="toggle_keGJ sun_3CPA"></span></div></div><div class="react-toggle-thumb"></div><input type="checkbox" disabled="" aria-label="Dark mode toggle" class="react-toggle-screenreader-only"/></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div><div class="navbar-sidebar"><div class="navbar-sidebar__brand"><a aria-current="page" class="navbar__brand active" href="/allui/"><img class="navbar__logo" src="/allui/img/logo.svg" alt="My Site Logo"/><strong>My Site</strong></a></div><div class="navbar-sidebar__items"><div class="menu"><ul class="menu__list"><li class="menu__list-item"><a class="menu__link" href="/allui/docs/motivation">Docs</a></li><li class="menu__list-item"><a class="menu__link" target="_blank" rel="noopener noreferrer" href="https://github.com/facebook/docusaurus">GitHub</a></li></ul></div></div></div></nav><div class="main-wrapper"><div class="docPage_1kjD"><div class="docSidebarContainer_1cYp"><div class="sidebar_1kLs"><div class="menu menu--responsive"><button aria-label="Open Menu" class="button button--secondary button--sm menu__button" type="button"><svg class="sidebarMenuIcon_2vk4" xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 32 32" role="img" focusable="false"><title>Menu</title><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><ul class="menu__list"><li class="menu__list-item menu__list-item--collapsed"><a class="menu__link menu__link--sublist" href="#!">Introduction</a><ul class="menu__list"><li class="menu__list-item"><a class="menu__link" href="/allui/docs/motivation">Motivation</a></li></ul></li><li class="menu__list-item menu__list-item--collapsed"><a class="menu__link menu__link--sublist" href="#!">Usage</a><ul class="menu__list"><li class="menu__list-item"><a class="menu__link" href="/allui/docs/installation">Installation</a></li></ul></li><li class="menu__list-item"><a class="menu__link menu__link--sublist menu__link--active" href="#!">Architecture</a><ul class="menu__list"><li class="menu__list-item"><a class="menu__link" href="/allui/docs/architecture/overview">Overview</a></li><li class="menu__list-item"><a class="menu__link" href="/allui/docs/architecture/state">State</a></li><li class="menu__list-item"><a class="menu__link" href="/allui/docs/architecture/reducer">Reducer</a></li><li class="menu__list-item"><a aria-current="page" class="menu__link menu__link--active" href="/allui/docs/architecture/schema">Schema</a></li><li class="menu__list-item"><a class="menu__link" href="/allui/docs/architecture/ui">User interface</a></li></ul></li></ul></div></div></div><main class="docMainContainer_FFX1"><div class="padding-vert--lg"><div class="container"><div class="row"><div class="col"><div class="docItemContainer_2cwg"><article><header><h1 class="docTitle_1vWb">Schema</h1></header><div class="markdown"><p>[TODO]</p></div></article><div class="margin-vert--lg"><nav class="pagination-nav"><div class="pagination-nav__item"><a class="pagination-nav__link" href="/allui/docs/architecture/reducer"><h5 class="pagination-nav__link--sublabel">Previous</h5><h4 class="pagination-nav__link--label">« <!-- -->Reducer</h4></a></div><div class="pagination-nav__item pagination-nav__item--next"><a class="pagination-nav__link" href="/allui/docs/architecture/ui"><h5 class="pagination-nav__link--sublabel">Next</h5><h4 class="pagination-nav__link--label">User interface<!-- --> »</h4></a></div></nav></div></div></div><div class="col col--3"><div class="tableOfContents_TbNY"></div></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="row footer__links"><div class="col footer__col"><h4 class="footer__title">Docs</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/allui/docs/motivation">Docs</a></li></ul></div></div><div class="text--center">Copyright © 2020 Matthieu Bovel. Built with Docusaurus.</div></div></footer>
+</div>
+
+<script type="text/javascript" src="/allui/styles.60dba78c.js"></script>
+
+<script type="text/javascript" src="/allui/runtime~main.77976ac2.js"></script>
+
+<script type="text/javascript" src="/allui/main.a5632039.js"></script>
+
+<script type="text/javascript" src="/allui/1.afe5ab55.js"></script>
+
+<script type="text/javascript" src="/allui/16.7cdc84c9.js"></script>
+
+<script type="text/javascript" src="/allui/93bf987a.ddcb08b5.js"></script>
+
+<script type="text/javascript" src="/allui/17896441.99f2087f.js"></script>
+
+<script type="text/javascript" src="/allui/9a603c57.3718a842.js"></script>
+
+
+</body>
+</html>

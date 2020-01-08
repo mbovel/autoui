@@ -3,8 +3,6 @@ import {
 	isString,
 	isNumber,
 	isBoolean,
-	isNull,
-	isDate,
 	upperFirst,
 	toLower,
 	startCase
@@ -39,10 +37,32 @@ export function titleCase(str: string): string {
 	return upperFirst(toLower(startCase(str)));
 }
 
-export type Primitive = string | number | boolean | null | Date;
-
 export function isPrimitive(value: any): value is Primitive {
-	return isString(value) || isNumber(value) || isBoolean(value) || isNull(value) || isDate(value);
+	return isString(value) || isNumber(value) || isBoolean(value);
+}
+
+export type TypeOf<V extends Primitive> = V extends string
+	? "string"
+	: V extends number
+	? "number"
+	: "boolean";
+
+export function typeOf<V extends Primitive>(value: V): TypeOf<V> {
+	return typeof value as any;
 }
 
 export type Tree<V> = V | { [key: string]: Tree<V> };
+
+export type Primitive = string | number | boolean;
+
+export type JSON = JSON[] | { [key: string]: JSON } | Primitive;
+
+export type MapFunction<R> = (value: unknown, index: number, array: unknown[]) => R;
+
+export function assert(condition: any, msg?: string): asserts condition {
+	if (!condition) throw new Error(msg);
+}
+
+export function ensure(condition: any, msg?: string): asserts condition {
+	if (!condition) throw new Error(msg);
+}

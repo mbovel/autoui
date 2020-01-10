@@ -51,18 +51,16 @@ export function typeOf<V extends Primitive>(value: V): TypeOf<V> {
 	return typeof value as any;
 }
 
-export type Tree<V> = V | { [key: string]: Tree<V> };
-
 export type Primitive = string | number | boolean;
 
 export type JSON = JSON[] | { [key: string]: JSON } | Primitive;
 
 export type MapFunction<R> = (value: unknown, index: number, array: unknown[]) => R;
 
-export function assert(condition: any, msg?: string): asserts condition {
+export function ensure(condition: any, msg?: string): asserts condition {
 	if (!condition) throw new Error(msg);
 }
 
-export function ensure(condition: any, msg?: string): asserts condition {
+export function assert(condition: any, msg?: string): asserts condition {
 	if (!condition) throw new Error(msg);
 }

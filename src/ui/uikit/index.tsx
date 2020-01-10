@@ -33,11 +33,3 @@ export const uikitComponents: Components = {
 	),
 	Form: ({ children }) => <form className="uk-form-horizontal uk-margin-large">{children}</form>
 };
-
-declare const Object: any;
-
-export const Foo = (
-	<AutoUI>
-		<Object key="coucou"></Object>
-	</AutoUI>
-);

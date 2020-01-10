@@ -4,7 +4,7 @@
 
 /** Imports */
 import { ComponentType } from "react";
-import { InputProps, LabelProps, SectionProps, MainProps, FormProps } from "./Props";
+import { InputProps, SectionProps, MainProps, FormProps } from "./Props";
 
 /*
  * UI Components

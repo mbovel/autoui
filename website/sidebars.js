@@ -9,6 +9,6 @@ module.exports = {
   docs: {
     Introduction: ['motivation'],
     Usage: ['installation'],
-    Architecture: ['changes_detection', 'choices', 'repetitions'],
+    Architecture: ['architecture/overview', 'architecture/state', 'architecture/reducer', 'architecture/schema', 'architecture/ui'],
   },
 };

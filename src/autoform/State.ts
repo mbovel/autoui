@@ -1,4 +1,4 @@
-import { Primitive, isPrimitive, MapFunction, ensure } from "./utils";
+import { Primitive, isPrimitive, MapFunction, ensure, JSONArray, JSONObject } from "./utils";
 
 import {
 	memoize,
@@ -46,31 +46,73 @@ export interface BooleanState extends PrimitiveState<boolean> {
 
 export type State = MapState | ListState | StringState | NumberState | BooleanState;
 
+export type StateOf<D extends JSON> = D extends string
+	? StringState
+	: D extends number
+	? NumberState
+	: D extends boolean
+	? BooleanState
+	: D extends JSONObject
+	? MapState
+	: D extends JSONArray
+	? ListState
+	: never;
+
+export type DataOf<S extends State> = S extends StringState
+	? string
+	: S extends NumberState
+	? number
+	: S extends BooleanState
+	? boolean
+	: S extends MapState
+	? { [K in keyof S["children"]]: DataOf<S["children"][K]> }
+	: S extends ListState
+	? Array<DataOf<S["children"][string]>>
+	: never;
+
 export function isBranchState(state: State): state is ListState | MapState {
 	return state.type === "list" || state.type === "map";
 }
 
-export function fromJs(data: any, getKey: MapFunction<string>): State {
+export function fromJson<D extends JSON>(data: D, getKey: MapFunction<string>): StateOf<D> {
 	if (isPrimitive(data)) {
-		return { type: typeof data as any, value: data, touched: false, focusedBy: [] };
+		const result: StateOf<string | number | boolean> = {
+			type: typeof data as any,
+			value: data,
+			touched: false,
+			focusedBy: []
+		};
+		return result as StateOf<D>;
 	} else if (isArray(data)) {
 		const keys = data.map(getKey);
-		const values = data.map(v => fromJs(v, getKey));
-		return { type: "list", order: keys, children: zipObject(keys, values) };
+		const values = data.map(v => fromJson(v, getKey));
+		const children = zipObject(keys, values);
+		const result: StateOf<JSONArray> = { type: "list", order: keys, children };
+		return result as StateOf<D>;
 	} else if (isObjectLike(data)) {
-		return { type: "map", children: mapValues(data, v => fromJs(v, getKey)) };
+		const children = mapValues(data as JSONObject, v => fromJson(v, getKey));
+		const result: StateOf<JSONObject> = { type: "map", children };
+		return result as StateOf<D>;
 	}
 	throw new Error("");
 }
 
-export const toJson = memoize(function(state: State): JSON {
+export const toJson = memoize(function<D extends JSON>(state: StateOf<D>): D {
 	switch (state.type) {
-		case "map":
-			return mapValues(state.children, toJson);
-		case "list":
-			return state.order.map(key => toJson(state.children[key]));
-		default:
-			return state.value;
+		case "map": {
+			const s = state as MapState;
+			const result: JSONObject = mapValues(s.children, toJson);
+			return result as D;
+		}
+		case "list": {
+			const s = state as ListState;
+			const result: JSONArray = s.order.map(key => toJson(s.children[key]));
+			return result as D;
+		}
+		default: {
+			const s = state as StringState | NumberState | BooleanState;
+			return s.value as D;
+		}
 	}
 });
 

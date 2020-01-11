@@ -12,18 +12,7 @@ import { InputProps, SectionProps, MainProps, FormProps } from "./Props";
  * @category Concrete
  */
 export interface Components {
-	/*
-	 * Text input
-	 *
-	 * @category Concrete
-	 */
 	TextInput: ComponentType<InputProps<string>>;
-
-	/*
-	 * Text area
-	 *
-	 * @category Concrete
-	 */
 	TextArea: ComponentType<InputProps<string>>;
 	NumberInput: ComponentType<InputProps<number>>;
 	Select: ComponentType<InputProps<string> & { options: { [key: string]: string } }>;

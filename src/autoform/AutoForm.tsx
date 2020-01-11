@@ -38,9 +38,29 @@ function _AutoForm(props: AutoFormProps) {
 	throw new Error("");
 }
 
+type IProps<V extends { [key: string]: unknown }> = { value: V; children(key: keyof V): void };
+function I<V>(props: IProps<V>) {
+	return <span>{props.children()}</span>;
+}
+
+export const test = <I value="string">{() => "asd"}</I>;
+
 _AutoForm.defaultProps = {
 	path: "",
 	user: ""
 };
 
 export const AutoForm = memo(_AutoForm);
+
+export const schema = {
+	name: {
+		type: "string",
+		validate(value: string) {
+			if (!value) {
+				return "Required";
+			} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
+				return "Invalid email address";
+			}
+		}
+	}
+};

@@ -53,7 +53,9 @@ export function typeOf<V extends Primitive>(value: V): TypeOf<V> {
 
 export type Primitive = string | number | boolean;
 
-export type JSON = JSON[] | { [key: string]: JSON } | Primitive;
+export type JSONArray = JSON[];
+export type JSONObject = { [key: string]: JSON };
+export type JSON = JSONArray | JSONObject | Primitive;
 
 export type MapFunction<R> = (value: unknown, index: number, array: unknown[]) => R;
 
@@ -63,4 +65,34 @@ export function ensure(condition: any, msg?: string): asserts condition {
 
 export function assert(condition: any, msg?: string): asserts condition {
 	if (!condition) throw new Error(msg);
+}
+
+export function arrayShallowEqual<A extends unknown[]>(a: A, b: A): boolean {
+	if (a.length !== b.length) return false;
+	for (let i = 0; i < a.length; ++i) if (a[i] !== b[i]) return false;
+	return true;
+}
+
+export interface CacheEntry<A, R> {
+	args: A;
+	result: R;
+}
+
+export type Cache<K, V> = {
+	set(key: K, value: V): any;
+	get(key: K): V | undefined;
+};
+
+export function memoize<A extends unknown[], R>(
+	fn: (...args: A) => R,
+	cache: Cache<A[0], CacheEntry<A, R>> = new Map(),
+	argsEqual: (a: A, b: A) => boolean = arrayShallowEqual
+): typeof fn {
+	return (...args) => {
+		const cached = cache.get(args[0]);
+		if (cached && argsEqual(args, cached.args)) return cached.result;
+		const result = fn(...args);
+		cache.set(args[0], { args, result });
+		return result;
+	};
 }

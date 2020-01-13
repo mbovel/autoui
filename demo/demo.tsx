@@ -7,12 +7,12 @@ import { defaultComponents } from "../src/ui/default";
 import { valueProps, defaultMapper } from "../src/autoform/defaultMapper";
 import { isString, isNumber, mapValues } from "lodash-es";
 import { Validator } from "../src/autoform/Validator";
-import { automergeReducer } from "../src/autoform/state/automergeReducer";
-import { Action } from "../src/autoform/state/Action";
+import { automergeReducer } from "../src/autoform/reducers/automergeReducer";
+import { Action } from "../src/autoform/Action";
 import { AutoForm } from "../src/autoform/JsonForm";
 import { uikitComponents } from "../src/ui/uikit";
 import { pathAppend } from "../src/autoform/utils";
-import { Schema } from "../src/autoform/schema/Schema";
+import { Schema } from "../src/autoform/DerivedData";
 import { Components } from "../src/ui/Components";
 
 const themes = {

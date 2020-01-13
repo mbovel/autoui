@@ -1,4 +1,7 @@
-import { ErrorList } from "./Errors";
+export interface UIError {
+	path: string;
+	message: string;
+}
 
 /**
  * Change event handler
@@ -8,7 +11,7 @@ import { ErrorList } from "./Errors";
  */
 export interface InputProps<T = any> {
 	value: T;
-	errors?: ErrorList;
+	errors?: UIError[];
 	label?: string;
 	title?: string;
 	name?: string;

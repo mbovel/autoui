@@ -1,25 +1,41 @@
 import { InputProps } from "../ui/Props";
 import { JSONObject, JSONArray, JSON } from "./utils";
 import { ReactElement } from "react";
+import { AutoFormProps } from "./AutoForm";
 
-export interface MapRenderProps<D extends JSONObject> {
-	children: { [K in keyof D]: ReactElement };
+export interface StringRenderProps extends InputProps<string> {}
+
+export interface NumberRenderProps extends InputProps<number> {}
+
+export interface BooleanRenderProps extends InputProps<boolean> {}
+
+export interface ObjectRenderProps<D extends JSONObject = JSONObject> {
+	children: {
+		[K in keyof D]: ReactElement<AutoFormProps<D[K]>>;
+	};
 }
 
-export interface ListRenderProps {
-	children: ReactElement[];
+export interface ArrayRenderProps<D extends JSONArray = JSONArray> {
+	children: Array<ReactElement<AutoFormProps<D[number]>>>;
 }
 
-export type RenderProps<D extends JSON> = D extends string
-	? InputProps<string>
+export type RenderProps =
+	| StringRenderProps
+	| NumberRenderProps
+	| BooleanRenderProps
+	| ObjectRenderProps
+	| ArrayRenderProps;
+
+export type RenderPropsFromData<D extends JSON> = D extends string
+	? StringRenderProps
 	: D extends number
-	? InputProps<number>
+	? NumberRenderProps
 	: D extends boolean
-	? InputProps<boolean>
+	? BooleanRenderProps
 	: D extends JSONObject
-	? MapRenderProps<D>
+	? ObjectRenderProps<D>
 	: D extends JSONArray
-	? ListRenderProps
+	? ArrayRenderProps<D>
 	: never;
 
-export type RenderFunction<D extends JSON> = (props: RenderProps<D>) => ReactElement;
+export type RenderFunction<P> = (props: P) => ReactElement;

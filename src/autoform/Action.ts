@@ -1,32 +1,37 @@
-import { State } from "./State";
-import { Primitive } from "../utils";
+import { Primitive, JSON } from "./utils";
 
 export type Action =
 	| {
 			type: "set";
 			path: string;
-			value: Primitive;
+			value: JSON;
 	  }
 	| {
-			type: "add";
+			type: "unset";
 			path: string;
-			value: State;
-			index?: number;
 	  }
 	| {
-			type: "remove";
+			type: "insertAt";
 			path: string;
+			index: number;
+			value: JSON;
+	  }
+	| {
+			type: "removeAt";
+			path: string;
+			index: number;
 	  }
 	| {
 			type: "move";
-			from: string;
-			to: string;
-			index?: number;
+			fromPath: string;
+			fromIndex: number;
+			toPath: string;
+			toIndex: number;
 	  }
 	| {
-			type: "reorder";
+			type: "sort";
 			path: string;
-			order: string[];
+			compare: (a: any, b: any) => number;
 	  }
 	| {
 			type: "blur";

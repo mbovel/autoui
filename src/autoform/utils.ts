@@ -5,12 +5,13 @@ import {
 	isBoolean,
 	upperFirst,
 	toLower,
-	startCase
+	startCase,
+	isArray
 } from "lodash-es";
 
-export function pathAppend(a: string, b: string) {
+export function pathAppend(a: string, b: string | number): string {
 	if (a) return a + "." + b;
-	else return b;
+	else return b.toString();
 }
 
 export function pathLast(p: string) {
@@ -41,6 +42,10 @@ export function isPrimitive(value: any): value is Primitive {
 	return isString(value) || isNumber(value) || isBoolean(value);
 }
 
+export function filterByPath<I extends { path: string }>(a: I[], path: string): I[] {
+	return a.filter(it => it.path.startsWith(path));
+}
+
 export type TypeOf<V extends Primitive> = V extends string
 	? "string"
 	: V extends number
@@ -67,11 +72,15 @@ export function assert(condition: any, msg?: string): asserts condition {
 	if (!condition) throw new Error(msg);
 }
 
-export function arrayShallowEqual<A extends unknown[]>(a: A, b: A): boolean {
+export function arrayShallowEqual(a: any, b: any): boolean {
+	if (a === b) return true;
+	if (!isArray(a) || !isArray(b)) return false;
 	if (a.length !== b.length) return false;
 	for (let i = 0; i < a.length; ++i) if (a[i] !== b[i]) return false;
 	return true;
 }
+
+export type Tree<V> = V | { [key: string]: Tree<V> };
 
 export interface CacheEntry<A, R> {
 	args: A;
@@ -96,3 +105,5 @@ export function memoize<A extends unknown[], R>(
 		return result;
 	};
 }
+
+export function assertType<T>(val: any): asserts val is T {}

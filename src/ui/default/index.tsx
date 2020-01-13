@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Components } from "../Components";
-import { ErrorList } from "../Errors";
 import * as classNames from "classnames";
 import { ReactElement } from "react";
+import { UIError } from "../Props";
 
 interface Options {
 	inputClass?: string;
@@ -20,95 +20,107 @@ export function makeFormComponents(
 	"TextInput" | "NumberInput" | "Checkbox" | "TextArea" | "DateInput" | "Select"
 > {
 	return {
-		TextInput: ({ onChange, errors, className, label, ...otherProps }) => (
+		TextInput: ({ set, focus, blur, errors, className, label, ...otherProps }) => (
 			<>
 				{opts.renderInput(
 					<input
 						{...otherProps}
 						type="text"
-						onChange={onChange && (e => onChange(e.target.value))}
 						className={classNames(className, opts.inputClass, {
 							[opts.errorInputClass]: errors
 						})}
+						onChange={set && (e => set(e.target.value))}
+						onFocus={focus}
+						onBlur={blur}
 					/>,
 					label
 				)}
 				{errorsList(errors)}
 			</>
 		),
-		NumberInput: ({ onChange, errors, className, label, ...otherProps }) => (
+		NumberInput: ({ set, focus, blur, errors, className, label, ...otherProps }) => (
 			<>
 				{opts.renderInput(
 					<input
 						{...otherProps}
 						type="number"
-						onChange={onChange && (e => onChange(parseFloat(e.target.value)))}
 						className={classNames(className, opts.inputClass, {
 							[opts.errorInputClass]: errors
 						})}
+						onChange={set && (e => set(parseFloat(e.target.value)))}
+						onFocus={focus}
+						onBlur={blur}
 					/>,
 					label
 				)}
 				{errorsList(errors)}
 			</>
 		),
-		Checkbox: ({ onChange, errors, className, label, value, ...otherProps }) => (
+		Checkbox: ({ set, focus, blur, errors, className, label, value, ...otherProps }) => (
 			<>
 				{opts.renderInput(
 					<input
 						{...otherProps}
 						type="checkbox"
 						checked={value}
-						onChange={onChange && (e => onChange(e.target.checked))}
 						className={classNames(className, opts.checkboxClass, {
 							[opts.errorInputClass]: errors
 						})}
+						onChange={set && (e => set(e.target.checked))}
+						onFocus={focus}
+						onBlur={blur}
 					/>,
 					label
 				)}
 				{errorsList(errors)}
 			</>
 		),
-		TextArea: ({ onChange, errors, className, label, ...otherProps }) => (
+		TextArea: ({ set, focus, blur, errors, className, label, ...otherProps }) => (
 			<>
 				{opts.renderInput(
 					<textarea
 						{...otherProps}
-						onChange={onChange && (e => onChange(e.target.value))}
 						className={classNames(className, opts.textAreaClass, {
 							[opts.errorInputClass]: errors
 						})}
+						onChange={set && (e => set(e.target.value))}
+						onFocus={focus}
+						onBlur={blur}
 					/>,
 					label
 				)}
 				{errorsList(errors)}
 			</>
 		),
-		DateInput: ({ onChange, errors, className, label, value, ...otherProps }) => (
+		DateInput: ({ set, focus, blur, errors, className, label, value, ...otherProps }) => (
 			<>
 				{opts.renderInput(
 					<input
 						{...otherProps}
 						type="date"
-						onChange={onChange && (e => onChange(e.target.value))}
 						className={classNames(className, opts.inputClass, {
 							[opts.errorInputClass]: errors
 						})}
+						onChange={set && (e => set(e.target.value))}
+						onFocus={focus}
+						onBlur={blur}
 					/>,
 					label
 				)}
 				{errorsList(errors)}
 			</>
 		),
-		Select: ({ onChange, errors, className, label, options, ...otherProps }) => (
+		Select: ({ set, focus, blur, errors, className, label, options, ...otherProps }) => (
 			<>
 				{opts.renderInput(
 					<select
 						{...otherProps}
-						onChange={onChange && (e => onChange(e.target.value))}
 						className={classNames(className, opts.selectClass, {
 							[opts.errorInputClass]: errors
 						})}
+						onChange={set && (e => set(e.target.value))}
+						onFocus={focus}
+						onBlur={blur}
 					>
 						{Object.entries(options).map(([key, value]) => (
 							<option key={key} value={key}>
@@ -121,10 +133,10 @@ export function makeFormComponents(
 			</>
 		)
 	};
-	function errorsList(errors: ErrorList) {
+	function errorsList(errors: UIError[] | undefined) {
 		return (
 			errors &&
-			errors.map(it => (
+			errors.map((it: UIError) => (
 				<small key={it.message} className={opts.errorClass}>
 					{it.message}
 				</small>

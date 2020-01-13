@@ -1,14 +1,14 @@
 import { Tree, ensure } from "./utils";
 import { Action } from "./Action";
 import { set, toPath, isObject, omit, remove, unset, get, isArray } from "lodash-es";
-import { JSON } from "./utils";
+import { JSONType } from "./utils";
 
 export interface ActivePath {
 	path: string;
 	user: string;
 }
 
-export interface State<D extends JSON = JSON> {
+export interface State<D extends JSONType = JSONType> {
 	data?: D;
 
 	// Meta
@@ -29,10 +29,6 @@ export function mutateState(state: State, action: Action): void {
 			return;
 		case "removeAt":
 			getArray(state, "data." + action.path).splice(action.index, 1);
-			return;
-		case "move":
-			const value = getArray(state, "data." + action.fromPath).splice(action.fromIndex, 1)[0];
-			getArray(state, "data." + action.toPath).splice(action.toIndex, 0, value);
 			return;
 		case "sort":
 			getArray(state, "data." + action.path).sort(action.compare);

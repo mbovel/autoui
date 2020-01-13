@@ -1,13 +1,17 @@
-import { InputProps } from "../ui/Props";
-import { JSONObject, JSONArray, JSON } from "./utils";
+import { PrimitiveProps } from "../ui/Props";
+import { JSONObject, JSONArray, JSONType } from "./utils";
 import { ReactElement } from "react";
 import { AutoFormProps } from "./AutoForm";
 
-export interface StringRenderProps extends InputProps<string> {}
+export interface StringRenderProps extends PrimitiveProps<string> {}
 
-export interface NumberRenderProps extends InputProps<number> {}
+export interface NumberRenderProps extends PrimitiveProps<number> {
+	min: number;
+	max: number;
+	multipleOf: number;
+}
 
-export interface BooleanRenderProps extends InputProps<boolean> {}
+export interface BooleanRenderProps extends PrimitiveProps<boolean> {}
 
 export interface ObjectRenderProps<D extends JSONObject = JSONObject> {
 	children: {
@@ -17,6 +21,8 @@ export interface ObjectRenderProps<D extends JSONObject = JSONObject> {
 
 export interface ArrayRenderProps<D extends JSONArray = JSONArray> {
 	children: Array<ReactElement<AutoFormProps<D[number]>>>;
+	insertAt(index: number, value: JSONType): void;
+	removeAt(index: number): void;
 }
 
 export type RenderProps =
@@ -26,7 +32,7 @@ export type RenderProps =
 	| ObjectRenderProps
 	| ArrayRenderProps;
 
-export type RenderPropsFromData<D extends JSON> = D extends string
+export type RenderPropsFromData<D extends JSONType> = D extends string
 	? StringRenderProps
 	: D extends number
 	? NumberRenderProps

@@ -6,7 +6,8 @@ import {
 	upperFirst,
 	toLower,
 	startCase,
-	isArray
+	isArray,
+	isNull
 } from "lodash-es";
 
 export function pathAppend(a: string, b: string | number): string {
@@ -39,7 +40,13 @@ export function titleCase(str: string): string {
 }
 
 export function isPrimitive(value: any): value is Primitive {
-	return isString(value) || isNumber(value) || isBoolean(value);
+	return (
+		isString(value) ||
+		isNumber(value) ||
+		isBoolean(value) ||
+		isUndefined(value) ||
+		isNull(value)
+	);
 }
 
 export function filterByPath<I extends { path: string }>(a: I[], path: string): I[] {
@@ -56,11 +63,11 @@ export function typeOf<V extends Primitive>(value: V): TypeOf<V> {
 	return typeof value as any;
 }
 
-export type Primitive = string | number | boolean;
+export type Primitive = string | number | boolean | null | undefined;
 
-export type JSONArray = JSON[];
-export type JSONObject = { [key: string]: JSON };
-export type JSON = JSONArray | JSONObject | Primitive;
+export type JSONArray = JSONType[];
+export type JSONObject = { [key: string]: JSONType };
+export type JSONType = JSONArray | JSONObject | Primitive;
 
 export type MapFunction<R> = (value: unknown, index: number, array: unknown[]) => R;
 

@@ -1,32 +1,25 @@
-import { Primitive, JSON } from "./utils";
+import { Primitive, JSONType } from "./utils";
 
 export type Action =
 	| {
 			type: "set";
 			path: string;
-			value: JSON;
+			data: JSONType;
 	  }
 	| {
 			type: "unset";
 			path: string;
 	  }
 	| {
-			type: "insertAt";
+			type: "insertAfter";
 			path: string;
 			index: number;
-			value: JSON;
+			data: JSONType;
 	  }
 	| {
 			type: "removeAt";
 			path: string;
 			index: number;
-	  }
-	| {
-			type: "move";
-			fromPath: string;
-			fromIndex: number;
-			toPath: string;
-			toIndex: number;
 	  }
 	| {
 			type: "sort";

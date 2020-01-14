@@ -24,6 +24,7 @@
         "uuid": "^3.3.3"
     },
     "devDependencies": {
+        "@types/json-schema": "^7.0.4",
         "copyfiles": "^2.1.1",
         "csstype": "^2.6.8",
         "npm-check-updates": "^4.0.1",

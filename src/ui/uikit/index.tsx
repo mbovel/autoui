@@ -20,16 +20,10 @@ export const uikitComponents: Components = {
 			</div>
 		)
 	}),
-	Main: ({ children }) => (
-		<div className="uk-section">
-			<div className="uk-container uk-container-small">{children}</div>
-		</div>
-	),
 	Section: ({ title, children }) => (
 		<section>
 			<h1>{title}</h1>
 			{children}
 		</section>
-	),
-	Form: ({ children }) => <form className="uk-form-horizontal uk-margin-large">{children}</form>
+	)
 };

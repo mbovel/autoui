@@ -7,7 +7,8 @@ import {
 	toLower,
 	startCase,
 	isArray,
-	isNull
+	isNull,
+	isEmpty
 } from "lodash-es";
 
 export function pathAppend(a: string, b: string | number): string {
@@ -83,11 +84,15 @@ export function arrayShallowEqual(a: any, b: any): boolean {
 	if (a === b) return true;
 	if (!isArray(a) || !isArray(b)) return false;
 	if (a.length !== b.length) return false;
-	for (let i = 0; i < a.length; ++i) if (a[i] !== b[i]) return false;
+	for (let i = 0; i < a.length; ++i) {
+		if (!(isEmpty(a) && isEmpty(b)) && a[i] !== b[i]) return false;
+	}
 	return true;
 }
 
 export type Tree<V> = V | { [key: string]: Tree<V> };
+
+export type ArrayOrOne<T> = T[] | T;
 
 export interface CacheEntry<A, R> {
 	args: A;

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Components } from "../Components";
+import { Components, SelectProps } from "../Components";
 import * as classNames from "classnames";
 import { ReactElement } from "react";
 import { UIError } from "../Props";
@@ -20,11 +20,11 @@ export function makeFormComponents(
 	"TextInput" | "NumberInput" | "Checkbox" | "TextArea" | "DateInput" | "Select"
 > {
 	return {
-		TextInput: ({ set, focus, blur, errors, className, label, ...otherProps }) => (
+		TextInput: ({ set, focus, blur, errors, className, label, data }) => (
 			<>
 				{opts.renderInput(
 					<input
-						{...otherProps}
+						value={data}
 						type="text"
 						className={classNames(className, opts.inputClass, {
 							[opts.errorInputClass]: errors
@@ -38,11 +38,11 @@ export function makeFormComponents(
 				{errorsList(errors)}
 			</>
 		),
-		NumberInput: ({ set, focus, blur, errors, className, label, ...otherProps }) => (
+		NumberInput: ({ set, focus, blur, errors, className, label, data }) => (
 			<>
 				{opts.renderInput(
 					<input
-						{...otherProps}
+						value={data}
 						type="number"
 						className={classNames(className, opts.inputClass, {
 							[opts.errorInputClass]: errors
@@ -56,13 +56,12 @@ export function makeFormComponents(
 				{errorsList(errors)}
 			</>
 		),
-		Checkbox: ({ set, focus, blur, errors, className, label, value, ...otherProps }) => (
+		Checkbox: ({ set, focus, blur, errors, className, label, data }) => (
 			<>
 				{opts.renderInput(
 					<input
-						{...otherProps}
 						type="checkbox"
-						checked={value}
+						checked={data}
 						className={classNames(className, opts.checkboxClass, {
 							[opts.errorInputClass]: errors
 						})}
@@ -75,11 +74,11 @@ export function makeFormComponents(
 				{errorsList(errors)}
 			</>
 		),
-		TextArea: ({ set, focus, blur, errors, className, label, ...otherProps }) => (
+		TextArea: ({ set, focus, blur, errors, className, label, data }) => (
 			<>
 				{opts.renderInput(
 					<textarea
-						{...otherProps}
+						value={data}
 						className={classNames(className, opts.textAreaClass, {
 							[opts.errorInputClass]: errors
 						})}
@@ -92,11 +91,11 @@ export function makeFormComponents(
 				{errorsList(errors)}
 			</>
 		),
-		DateInput: ({ set, focus, blur, errors, className, label, value, ...otherProps }) => (
+		DateInput: ({ set, focus, blur, errors, className, label, data }) => (
 			<>
 				{opts.renderInput(
 					<input
-						{...otherProps}
+						value={data}
 						type="date"
 						className={classNames(className, opts.inputClass, {
 							[opts.errorInputClass]: errors
@@ -110,21 +109,29 @@ export function makeFormComponents(
 				{errorsList(errors)}
 			</>
 		),
-		Select: ({ set, focus, blur, errors, className, label, options, ...otherProps }) => (
+		Select: <D extends string>({
+			set,
+			focus,
+			blur,
+			errors,
+			className,
+			label,
+			options,
+			data
+		}: SelectProps<D>) => (
 			<>
 				{opts.renderInput(
 					<select
-						{...otherProps}
 						className={classNames(className, opts.selectClass, {
 							[opts.errorInputClass]: errors
 						})}
-						onChange={set && (e => set(e.target.value))}
+						onChange={set && (e => set(e.target.value as D))}
 						onFocus={focus}
 						onBlur={blur}
 					>
 						{Object.entries(options).map(([key, value]) => (
-							<option key={key} value={key}>
-								{value}
+							<option key={key} value={value as string}>
+								{data}
 							</option>
 						))}
 					</select>,
@@ -158,12 +165,10 @@ export const defaultComponents: Components = {
 			</p>
 		)
 	}),
-	Main: ({ children }) => <main>{children}</main>,
 	Section: ({ title, children }) => (
 		<section>
 			<h1>{title}</h1>
 			{children}
 		</section>
-	),
-	Form: ({ children }) => <form>{children}</form>
+	)
 };

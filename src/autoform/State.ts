@@ -9,7 +9,7 @@ export interface ActivePath {
 }
 
 export interface State<D extends JSONType = JSONType> {
-	data?: D;
+	data: D;
 
 	// Meta
 	touched?: Tree<true | undefined>;
@@ -19,13 +19,13 @@ export interface State<D extends JSONType = JSONType> {
 export function mutateState(state: State, action: Action): void {
 	switch (action.type) {
 		case "set":
-			set(state, "data." + action.path, action.value);
+			set(state, "data." + action.path, action.data);
 			return;
 		case "unset":
 			unset(state, "data." + action.path);
 			return;
-		case "insertAt":
-			getArray(state, "data." + action.path).splice(action.index, 0, action.value);
+		case "insertAfter":
+			getArray(state, "data." + action.path).splice(action.index, 0, action.data);
 			return;
 		case "removeAt":
 			getArray(state, "data." + action.path).splice(action.index, 1);

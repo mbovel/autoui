@@ -1,4 +1,4 @@
-import { Primitive, JSONType } from "./utils";
+import { JSONType } from "./utils";
 
 export type Action =
 	| {

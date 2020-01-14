@@ -1,46 +1,27 @@
 import * as Automerge from "automerge";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { useReducer, Reducer } from "react";
-import { mergeRenderers } from "../src/autoform/Renderer";
 import { defaultComponents } from "../src/ui/default";
-import { valueProps, defaultMapper } from "../src/autoform/defaultMapper";
-import { isString, isNumber, mapValues } from "lodash-es";
-import { Validator } from "../src/autoform/Validator";
 import { automergeReducer } from "../src/autoform/reducers/automergeReducer";
-import { Action } from "../src/autoform/Action";
-import { AutoForm } from "../src/autoform/JsonForm";
 import { uikitComponents } from "../src/ui/uikit";
-import { pathAppend } from "../src/autoform/utils";
-import { Schema } from "../src/autoform/DerivedData";
-import { Components } from "../src/ui/Components";
+import { useDataProps } from "../src/autoform/useDataProps";
+import { mapValues } from "lodash-es";
+import { AutoForm } from "../src/autoform/AutoForm";
 
 const themes = {
 	uikit: {
 		name: "UIKit",
 		stylesheet: "https://cdnjs.cloudflare.com/ajax/libs/uikit/3.2.0/css/uikit.min.css",
-		components: uikitComponents
+		UI: uikitComponents
 	},
 	default: {
 		name: "Default",
 		stylesheet: undefined,
-		components: defaultComponents
+		UI: defaultComponents
 	}
 } as const;
 
-const options = mapValues(themes, _ => _.name);
-
-function getSchema(UI: Components): Schema {
-	return {
-		type: "map",
-		properties: {
-			theme: {
-				type: "string",
-				render: props => <UI.Select {...valueProps(context)} options={options} />
-			}
-		}
-	};
-}
+const selectOptions = mapValues(themes, t => t.name);
 
 class Head extends React.Component {
 	public render() {
@@ -60,16 +41,14 @@ const initialState = Automerge.from({
 			age: 25,
 			adult: true
 		}
-	},
-	touched: {}
+	}
 });
 
 function App() {
-	const [state, dispatch] = useReducer(
-		automergeReducer as Reducer<typeof initialState, Action>,
-		initialState
-	);
-	const { components: UI, stylesheet } = themes[state.data.theme];
+	const props = useDataProps(initialState, automergeReducer);
+	console.log(props);
+	const { UI, stylesheet } = themes[props.data.theme];
+	const { theme: themeProps, ...otherChildrenProps } = props.children;
 	return (
 		<>
 			{stylesheet && (
@@ -77,19 +56,12 @@ function App() {
 					<link rel="stylesheet" href={stylesheet} />
 				</Head>
 			)}
-
-			<UI.Main>
-				<AutoForm
-					data={state.data}
-					touched={state.touched}
-					UI={UI}
-					dispatch={dispatch}
-					mapper={myMapper}
-					validator={myValidator}
-					path=""
-					feedback={myValidator(state.data, "")}
-				/>
-			</UI.Main>
+			<main>
+				<UI.Select {...themeProps} options={selectOptions} />
+				{Object.entries(otherChildrenProps).map(([key, childProps]) => (
+					<AutoForm props={childProps} key={key} UI={UI} />
+				))}
+			</main>
 		</>
 	);
 }

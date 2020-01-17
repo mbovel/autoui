@@ -6,9 +6,8 @@ import {
 	upperFirst,
 	toLower,
 	startCase,
-	isArray,
-	isNull,
-	isEmpty
+	isEmpty,
+	isArrayLike
 } from "lodash-es";
 
 export function pathAppend(a: string, b: string | number): string {
@@ -41,13 +40,7 @@ export function titleCase(str: string): string {
 }
 
 export function isPrimitive(value: any): value is Primitive {
-	return (
-		isString(value) ||
-		isNumber(value) ||
-		isBoolean(value) ||
-		isUndefined(value) ||
-		isNull(value)
-	);
+	return isString(value) || isNumber(value) || isBoolean(value);
 }
 
 export function filterByPath<I extends { path: string }>(a: I[], path: string): I[] {
@@ -64,7 +57,7 @@ export function typeOf<V extends Primitive>(value: V): TypeOf<V> {
 	return typeof value as any;
 }
 
-export type Primitive = string | number | boolean | null | undefined;
+export type Primitive = string | number | boolean;
 
 export type JSONArray = JSONType[];
 export type JSONObject = { [key: string]: JSONType };
@@ -82,10 +75,12 @@ export function assert(condition: any, msg?: string): asserts condition {
 
 export function arrayShallowEqual(a: any, b: any): boolean {
 	if (a === b) return true;
-	if (!isArray(a) || !isArray(b)) return false;
+	if (!isArrayLike(a) || !isArrayLike(b)) return false;
 	if (a.length !== b.length) return false;
 	for (let i = 0; i < a.length; ++i) {
-		if (!(isEmpty(a) && isEmpty(b)) && a[i] !== b[i]) return false;
+		if (!(isEmpty(a[i]) && isEmpty(b[i])) && a[i] !== b[i]) {
+			return false;
+		}
 	}
 	return true;
 }
@@ -104,18 +99,18 @@ export type Cache<K, V> = {
 	get(key: K): V | undefined;
 };
 
-export function memoize<A extends unknown[], R>(
-	fn: (...args: A) => R,
+export function memoize<F extends (...args: A) => R, A extends any[], R>(
+	fn: F,
 	cache: Cache<A[0], CacheEntry<A, R>> = new Map(),
 	argsEqual: (a: A, b: A) => boolean = arrayShallowEqual
-): typeof fn {
-	return (...args) => {
+): F {
+	return ((...args) => {
 		const cached = cache.get(args[0]);
 		if (cached && argsEqual(args, cached.args)) return cached.result;
 		const result = fn(...args);
 		cache.set(args[0], { args, result });
 		return result;
-	};
+	}) as F;
 }
 
 export function assertType<T>(val: any): asserts val is T {}

@@ -1,10 +1,11 @@
-import { JSONType } from "./utils";
+import { JSONType, Primitive } from "./utils";
+import { State } from "./State";
 
 export type Action =
 	| {
 			type: "set";
 			path: string;
-			data: JSONType;
+			data: Primitive;
 	  }
 	| {
 			type: "unset";
@@ -13,13 +14,14 @@ export type Action =
 	| {
 			type: "insertAfter";
 			path: string;
+			key: string;
 			index: number;
-			data: JSONType;
+			data: State;
 	  }
 	| {
-			type: "removeAt";
+			type: "remove";
 			path: string;
-			index: number;
+			key: string;
 	  }
 	| {
 			type: "sort";
@@ -29,12 +31,10 @@ export type Action =
 	| {
 			type: "blur";
 			path: string;
-			user: string;
 	  }
 	| {
 			type: "focus";
 			path: string;
-			user: string;
 	  }
 	| {
 			type: "undo";

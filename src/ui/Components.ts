@@ -3,12 +3,8 @@
  */
 
 /** Imports */
-import { ComponentType, PropsWithChildren, ReactElement } from "react";
+import { ComponentType, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { InputProps, SectionProps } from "./Props";
-
-export interface SelectProps<D extends string = any> extends InputProps<D> {
-	options: { [key in D]: string };
-}
 
 /*
  * UI Components
@@ -26,4 +22,6 @@ export interface Components {
 	Checkbox: ComponentType<InputProps<boolean>>;
 	DateInput: ComponentType<InputProps<string>>;
 	Section: ComponentType<SectionProps>;
+	Row: ComponentType<{ children: ReactNode }>;
+	Column: ComponentType<{ children: ReactNode }>;
 }

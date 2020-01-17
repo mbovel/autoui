@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Components, SelectProps } from "../Components";
 import * as classNames from "classnames";
-import { ReactElement } from "react";
+import { ReactElement, ReactNode } from "react";
 import { UIError } from "../Props";
 
 interface Options {
@@ -11,7 +11,11 @@ interface Options {
 	checkboxClass?: string;
 	errorInputClass: string;
 	errorClass: string;
-	renderInput: (inputEl: ReactElement, label?: string) => ReactElement;
+	renderInput: (
+		inputEl: ReactElement,
+		label: string | undefined,
+		errors: ReactNode
+	) => ReactElement;
 }
 export function makeFormComponents(
 	opts: Options
@@ -20,93 +24,133 @@ export function makeFormComponents(
 	"TextInput" | "NumberInput" | "Checkbox" | "TextArea" | "DateInput" | "Select"
 > {
 	return {
-		TextInput: ({ set, focus, blur, errors, className, label, data }) => (
+		TextInput: ({
+			onChange: set,
+			onFocus: focus,
+			onBlur: blur,
+			errors,
+			className,
+			label,
+			data
+		}) => (
 			<>
 				{opts.renderInput(
 					<input
 						value={data}
 						type="text"
 						className={classNames(className, opts.inputClass, {
-							[opts.errorInputClass]: errors
+							[opts.errorInputClass]: errors?.length
 						})}
 						onChange={set && (e => set(e.target.value))}
 						onFocus={focus}
 						onBlur={blur}
 					/>,
-					label
+					label,
+					errorsList(errors)
 				)}
-				{errorsList(errors)}
 			</>
 		),
-		NumberInput: ({ set, focus, blur, errors, className, label, data }) => (
+		NumberInput: ({
+			onChange: set,
+			onFocus: focus,
+			onBlur: blur,
+			errors,
+			className,
+			label,
+			data
+		}) => (
 			<>
 				{opts.renderInput(
 					<input
 						value={data}
 						type="number"
 						className={classNames(className, opts.inputClass, {
-							[opts.errorInputClass]: errors
+							[opts.errorInputClass]: errors?.length
 						})}
 						onChange={set && (e => set(parseFloat(e.target.value)))}
 						onFocus={focus}
 						onBlur={blur}
 					/>,
-					label
+					label,
+					errorsList(errors)
 				)}
-				{errorsList(errors)}
 			</>
 		),
-		Checkbox: ({ set, focus, blur, errors, className, label, data }) => (
+		Checkbox: ({
+			onChange: set,
+			onFocus: focus,
+			onBlur: blur,
+			errors,
+			className,
+			label,
+			data
+		}) => (
 			<>
 				{opts.renderInput(
 					<input
 						type="checkbox"
 						checked={data}
 						className={classNames(className, opts.checkboxClass, {
-							[opts.errorInputClass]: errors
+							[opts.errorInputClass]: errors?.length
 						})}
 						onChange={set && (e => set(e.target.checked))}
 						onFocus={focus}
 						onBlur={blur}
 					/>,
-					label
+					label,
+					errorsList(errors)
 				)}
-				{errorsList(errors)}
 			</>
 		),
-		TextArea: ({ set, focus, blur, errors, className, label, data }) => (
+		TextArea: ({
+			onChange: set,
+			onFocus: focus,
+			onBlur: blur,
+			errors,
+			className,
+			label,
+			data
+		}) => (
 			<>
 				{opts.renderInput(
 					<textarea
 						value={data}
 						className={classNames(className, opts.textAreaClass, {
-							[opts.errorInputClass]: errors
+							[opts.errorInputClass]: errors?.length
 						})}
 						onChange={set && (e => set(e.target.value))}
 						onFocus={focus}
 						onBlur={blur}
 					/>,
-					label
+					label,
+					errorsList(errors)
 				)}
-				{errorsList(errors)}
 			</>
 		),
-		DateInput: ({ set, focus, blur, errors, className, label, data }) => (
+		DateInput: ({
+			onChange: set,
+			onFocus: focus,
+			onBlur: blur,
+			errors,
+			className,
+			label,
+			data
+		}) => (
 			<>
 				{opts.renderInput(
 					<input
 						value={data}
 						type="date"
 						className={classNames(className, opts.inputClass, {
-							[opts.errorInputClass]: errors
+							[opts.errorInputClass]: errors?.length
 						})}
 						onChange={set && (e => set(e.target.value))}
 						onFocus={focus}
 						onBlur={blur}
 					/>,
-					label
+					label,
+					errorsList(errors)
 				)}
-				{errorsList(errors)}
 			</>
 		),
 		Select: <D extends string>({
@@ -122,20 +166,22 @@ export function makeFormComponents(
 			<>
 				{opts.renderInput(
 					<select
+						value={data}
 						className={classNames(className, opts.selectClass, {
-							[opts.errorInputClass]: errors
+							[opts.errorInputClass]: errors?.length
 						})}
 						onChange={set && (e => set(e.target.value as D))}
 						onFocus={focus}
 						onBlur={blur}
 					>
-						{Object.entries(options).map(([key, value]) => (
-							<option key={key} value={value as string}>
-								{data}
+						{Object.entries(options).map(([key, label]) => (
+							<option key={key} value={key}>
+								{label as string}
 							</option>
 						))}
 					</select>,
-					label
+					label,
+					errorsList(errors)
 				)}
 			</>
 		)
@@ -156,15 +202,19 @@ export const defaultComponents: Components = {
 	...makeFormComponents({
 		errorClass: "error",
 		errorInputClass: "error",
-		renderInput: (inputEl, label) => (
+		renderInput: (inputEl, label, errors) => (
 			<p>
-				{label && <label className="uk-form-label">{label}</label>}
-				<div className={classNames("uk-form-controls", { "uk-form-controls-text": false })}>
-					{inputEl}
-				</div>
+				{label && <label className="uk-form-label">{label}</label>} {inputEl}
+				{errors}
 			</p>
 		)
 	}),
+	Row: ({ children }) => {
+		return <div style={{ display: "flex" }}>{children}</div>;
+	},
+	Column: ({ children }) => {
+		return <div>{children}</div>;
+	},
 	Section: ({ title, children }) => (
 		<section>
 			<h1>{title}</h1>

@@ -9,11 +9,13 @@
     "unpkg": "dist/bundle.umd.js",
     "sideEffects": false,
     "dependencies": {
+        "@types/ajv": "^1.0.0",
         "@types/classnames": "^2.2.9",
         "@types/lodash-es": "^4.17.3",
         "@types/react": "^16.9.17",
         "@types/react-dom": "^16.9.4",
         "@types/uuid": "^3.4.6",
+        "ajv": "^6.10.2",
         "automerge": "^0.12.1",
         "classnames": "^2.2.6",
         "lodash-es": "^4.17.15",

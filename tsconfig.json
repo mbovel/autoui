@@ -11,7 +11,8 @@
 		"declaration": true,
 		"jsx": "react",
 		"strict": true,
-		"outDir": "./dist"
+		"outDir": "./dist",
+		"esModuleInterop": true
 	},
-	"include": ["src", "demo/manual.tsx"]
+	"include": ["src"]
 }

@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`fromJson correctly converts array 1`] = `
+Object {
+  "children": Object {
+    "0": Object {
+      "value": 1,
+    },
+    "1": Object {
+      "value": 2,
+    },
+    "2": Object {
+      "value": 3,
+    },
+  },
+  "order": Array [
+    "0",
+    "1",
+    "2",
+  ],
+}
+`;
+
+exports[`fromJson correctly converts number 1`] = `
+Object {
+  "value": 2,
+}
+`;
+
+exports[`fromJson correctly converts object 1`] = `
+Object {
+  "children": Object {
+    "prop1": Object {
+      "value": 1,
+    },
+    "prop2": Object {
+      "value": 2,
+    },
+  },
+}
+`;
+
+exports[`fromJson correctly converts string 1`] = `
+Object {
+  "value": "test",
+}
+`;

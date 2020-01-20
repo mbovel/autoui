@@ -1,6 +1,10 @@
-import { JSONType, JSONObject, JSONArray, Primitive } from "../autoform/utils";
-import { isString, isNumber, isBoolean, isArray, isObject } from "lodash-es";
-import { ReactElement } from "react";
+import { JSONType, JSONObject, JSONArray, Primitive } from "../model/utils";
+import { ReactElement, ComponentType } from "react";
+import isString from "lodash/isString";
+import isNumber from "lodash/isNumber";
+import isBoolean from "lodash/isBoolean";
+import isArray from "lodash/isArray";
+import isPlainObject from "lodash/isPlainObject";
 
 export interface UIError {
 	path: string;
@@ -15,9 +19,12 @@ export interface BaseDataProps<D> {
 	selected?: boolean;
 	selectable?: boolean;
 
-	defaultRender?(props: this): ReactElement;
 	onFocus: () => void;
 	onBlur: () => void;
+
+	// TODO: should this really be here?
+	_render?(props: this): ReactElement;
+	_component?: ComponentType<this>;
 }
 
 export interface PrimitiveProps<D extends Primitive = Primitive> extends BaseDataProps<D> {
@@ -25,12 +32,12 @@ export interface PrimitiveProps<D extends Primitive = Primitive> extends BaseDat
 }
 
 export interface ObjectProps<D extends JSONObject = JSONObject> extends BaseDataProps<D> {
-	children: { [K in keyof D]: DataProps<D[K]> };
+	children: { [K in keyof D]: DataPropsOf<D[K]> };
 	order?: string[];
 }
 
 export interface ArrayProps<D extends JSONArray = JSONArray> extends BaseDataProps<D> {
-	children: { [key: string]: DataProps<D[number]> };
+	children: { [key: string]: DataPropsOf<D[number]> };
 	order: string[];
 	selectScope?: boolean;
 
@@ -40,18 +47,20 @@ export interface ArrayProps<D extends JSONArray = JSONArray> extends BaseDataPro
 }
 
 // See https://github.com/Microsoft/TypeScript/issues/29368#issuecomment-453529532
-export type DataProps<D extends JSONType = JSONType> = [D] extends [Primitive]
+export type DataPropsOf<D extends JSONType = JSONType> = [D] extends [Primitive]
 	? PrimitiveProps<D>
 	: [D] extends [JSONObject]
 	? ObjectProps<D>
 	: [D] extends [JSONArray]
 	? ArrayProps<D>
-	:
-			| PrimitiveProps<string>
-			| PrimitiveProps<number>
-			| PrimitiveProps<boolean>
-			| ObjectProps
-			| ArrayProps;
+	: DataProps;
+
+export type DataProps =
+	| PrimitiveProps<string>
+	| PrimitiveProps<number>
+	| PrimitiveProps<boolean>
+	| ObjectProps
+	| ArrayProps;
 
 export function isStringProps(props: DataProps): props is PrimitiveProps<string> {
 	return isString(props.data);
@@ -70,7 +79,7 @@ export function isArrayProps(props: DataProps): props is ArrayProps {
 }
 
 export function isObjectProps(props: DataProps): props is ObjectProps {
-	return !isArray(props.data) && isObject(props.data);
+	return isPlainObject(props.data);
 }
 
 export interface InputProps<D extends Primitive> extends PrimitiveProps<D> {

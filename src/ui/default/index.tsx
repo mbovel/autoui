@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Components, SelectProps } from "../Components";
-import * as classNames from "classnames";
+import { Components } from "../Components";
+import classNames from "classnames";
 import { ReactElement, ReactNode } from "react";
-import { UIError } from "../Props";
+import { UIError, SelectProps } from "../Props";
 
 interface Options {
 	inputClass?: string;
@@ -24,15 +24,7 @@ export function makeFormComponents(
 	"TextInput" | "NumberInput" | "Checkbox" | "TextArea" | "DateInput" | "Select"
 > {
 	return {
-		TextInput: ({
-			onChange: set,
-			onFocus: focus,
-			onBlur: blur,
-			errors,
-			className,
-			label,
-			data
-		}) => (
+		TextInput: ({ onChange, onFocus, onBlur, errors, className, label, data }) => (
 			<>
 				{opts.renderInput(
 					<input
@@ -41,24 +33,16 @@ export function makeFormComponents(
 						className={classNames(className, opts.inputClass, {
 							[opts.errorInputClass]: errors?.length
 						})}
-						onChange={set && (e => set(e.target.value))}
-						onFocus={focus}
-						onBlur={blur}
+						onChange={onChange && (e => onChange(e.target.value))}
+						onFocus={onFocus}
+						onBlur={onBlur}
 					/>,
 					label,
 					errorsList(errors)
 				)}
 			</>
 		),
-		NumberInput: ({
-			onChange: set,
-			onFocus: focus,
-			onBlur: blur,
-			errors,
-			className,
-			label,
-			data
-		}) => (
+		NumberInput: ({ onChange: set, onFocus, onBlur, errors, className, label, data }) => (
 			<>
 				{opts.renderInput(
 					<input
@@ -68,23 +52,15 @@ export function makeFormComponents(
 							[opts.errorInputClass]: errors?.length
 						})}
 						onChange={set && (e => set(parseFloat(e.target.value)))}
-						onFocus={focus}
-						onBlur={blur}
+						onFocus={onFocus}
+						onBlur={onBlur}
 					/>,
 					label,
 					errorsList(errors)
 				)}
 			</>
 		),
-		Checkbox: ({
-			onChange: set,
-			onFocus: focus,
-			onBlur: blur,
-			errors,
-			className,
-			label,
-			data
-		}) => (
+		Checkbox: ({ onChange, onFocus, onBlur, errors, className, label, data }) => (
 			<>
 				{opts.renderInput(
 					<input
@@ -93,24 +69,16 @@ export function makeFormComponents(
 						className={classNames(className, opts.checkboxClass, {
 							[opts.errorInputClass]: errors?.length
 						})}
-						onChange={set && (e => set(e.target.checked))}
-						onFocus={focus}
-						onBlur={blur}
+						onChange={onChange && (e => onChange(e.target.checked))}
+						onFocus={onFocus}
+						onBlur={onBlur}
 					/>,
 					label,
 					errorsList(errors)
 				)}
 			</>
 		),
-		TextArea: ({
-			onChange: set,
-			onFocus: focus,
-			onBlur: blur,
-			errors,
-			className,
-			label,
-			data
-		}) => (
+		TextArea: ({ onChange, onFocus, onBlur, errors, className, label, data }) => (
 			<>
 				{opts.renderInput(
 					<textarea
@@ -118,24 +86,16 @@ export function makeFormComponents(
 						className={classNames(className, opts.textAreaClass, {
 							[opts.errorInputClass]: errors?.length
 						})}
-						onChange={set && (e => set(e.target.value))}
-						onFocus={focus}
-						onBlur={blur}
+						onChange={onChange && (e => onChange(e.target.value))}
+						onFocus={onFocus}
+						onBlur={onBlur}
 					/>,
 					label,
 					errorsList(errors)
 				)}
 			</>
 		),
-		DateInput: ({
-			onChange: set,
-			onFocus: focus,
-			onBlur: blur,
-			errors,
-			className,
-			label,
-			data
-		}) => (
+		DateInput: ({ onChange, onFocus, onBlur, errors, className, label, data }) => (
 			<>
 				{opts.renderInput(
 					<input
@@ -144,9 +104,9 @@ export function makeFormComponents(
 						className={classNames(className, opts.inputClass, {
 							[opts.errorInputClass]: errors?.length
 						})}
-						onChange={set && (e => set(e.target.value))}
-						onFocus={focus}
-						onBlur={blur}
+						onChange={onChange && (e => onChange(e.target.value))}
+						onFocus={onFocus}
+						onBlur={onBlur}
 					/>,
 					label,
 					errorsList(errors)
@@ -154,9 +114,9 @@ export function makeFormComponents(
 			</>
 		),
 		Select: <D extends string>({
-			set,
-			focus,
-			blur,
+			onChange,
+			onFocus,
+			onBlur,
 			errors,
 			className,
 			label,
@@ -170,9 +130,9 @@ export function makeFormComponents(
 						className={classNames(className, opts.selectClass, {
 							[opts.errorInputClass]: errors?.length
 						})}
-						onChange={set && (e => set(e.target.value as D))}
-						onFocus={focus}
-						onBlur={blur}
+						onChange={onChange && (e => onChange(e.target.value as D))}
+						onFocus={onFocus}
+						onBlur={onBlur}
 					>
 						{Object.entries(options).map(([key, label]) => (
 							<option key={key} value={key}>

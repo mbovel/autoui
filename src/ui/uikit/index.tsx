@@ -1,7 +1,7 @@
 import { Components } from "../Components";
 import { makeFormComponents } from "../default";
 import * as React from "react";
-import * as classNames from "classnames";
+import classNames from "classnames";
 
 export const uikitComponents: Components = {
 	...makeFormComponents({

@@ -4,7 +4,7 @@
 
 /** Imports */
 import { ComponentType, PropsWithChildren, ReactElement, ReactNode } from "react";
-import { InputProps, SectionProps } from "./Props";
+import { InputProps, SectionProps, SelectProps } from "./Props";
 
 /*
  * UI Components

@@ -8,7 +8,6 @@
 	"main": "dist/index.js",
 	"entrypoint": "dist/index.js",
 	"sideEffects": false,
-	"type": "module",
 	"dependencies": {
 		"@types/ajv": "^1.0.0",
 		"@types/classnames": "^2.2.9",
@@ -19,11 +18,8 @@
 		"ajv": "^6.10.2",
 		"automerge": "^0.12.1",
 		"classnames": "^2.2.6",
+		"immer": "^5.3.2",
 		"lodash": "^4.17.15",
-		"lodash-es": "^4.17.15",
-		"preact": "^10.1.1",
-		"react": "^16.12.0",
-		"react-dom": "^16.12.0",
 		"uuid": "^3.3.3"
 	},
 	"devDependencies": {
@@ -42,6 +38,10 @@
 		"webpack": "^4.41.4",
 		"webpack-bundle-analyzer": "^3.6.0",
 		"webpack-cli": "^3.3.10"
+	},
+	"peerDependencies": {
+		"react": "^16.12.0",
+		"react-dom": "^16.12.0"
 	},
 	"scripts": {
 		"build:site": "npm-run-all build:site:typedoc build:demo build:site:demo build:site:docusaurus",

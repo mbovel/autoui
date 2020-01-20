@@ -6,11 +6,17 @@
 		"analyse": "webpack --profile --json > stats.json && webpack-bundle-analyzer stats.json"
 	},
 	"devDependencies": {
-		"compression-webpack-plugin": "^3.1.0",
+		"@babel/core": "^7.8.3",
+		"@babel/plugin-transform-react-jsx": "^7.8.3",
+		"@babel/preset-env": "^7.8.3",
+		"babel-loader": "^8.0.6",
 		"webpack": "^4.41.5",
 		"webpack-bundle-analyzer": "^3.6.0"
 	},
 	"dependencies": {
-		"preact": "^10.2.1"
+		"autoui": "file://../..",
+		"preact": "^10.2.1",
+		"react": "^16.12.0",
+		"react-dom": "^16.12.0"
 	}
 }

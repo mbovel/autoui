@@ -75,28 +75,28 @@ export function mutateState(state: State, action: Action, user: string = "me"): 
 	}
 }
 
-export function fromJson<D extends JSONType>(data: D): StateOf<D>;
-export function fromJson(data: JSONType): State;
-export function fromJson(data: JSONType): State {
+export function stateFromJson<D extends JSONType>(data: D): StateOf<D>;
+export function stateFromJson(data: JSONType): State;
+export function stateFromJson(data: JSONType): State {
 	if (isPrimitive(data)) {
 		return { value: data };
 	} else if (isArray(data)) {
 		const order = keys(data);
-		return { order, children: zipObject(order, data.map(fromJson)) };
+		return { order, children: zipObject(order, data.map(stateFromJson)) };
 	} else {
-		return { children: mapValues(data, fromJson) };
+		return { children: mapValues(data, stateFromJson) };
 	}
 }
 
-export function toJSON<D extends JSONType>(state: StateOf<D>): D;
-export function toJSON(state: State): JSONType;
-export function toJSON(state: State): JSONType {
+export function stateToJson<D extends JSONType>(state: StateOf<D>): D;
+export function stateToJson(state: State): JSONType;
+export function stateToJson(state: State): JSONType {
 	if (isPrimitiveState(state)) {
 		return state.value;
 	} else if (isArrayState(state)) {
-		return state.order.map(key => toJSON<JSONType>(state.children[key]));
+		return state.order.map(key => stateToJson<JSONType>(state.children[key]));
 	} else {
-		return mapValues(state.children, toJSON);
+		return mapValues(state.children, stateToJson);
 	}
 }
 

@@ -1,12 +1,19 @@
 import { pathAppend, Primitive, memoize } from "./utils";
 import { DataProps } from "../ui/Props";
-import { State, isPrimitiveState, toJSON, isArrayState } from "./State";
+import { State, isPrimitiveState, stateToJson, isArrayState } from "./State";
 import mapValues from "lodash/mapValues";
 import { Dispatcher } from "./Dispatcher";
+import { Store } from "./Store";
 
-export const storeToProps = memoize(_storeToProps, new WeakMap());
+export function storeToProps(store: Store): DataProps {
+	return _storeToProps(store.state, store.dispatch);
+}
 
-function _storeToProps(state: State, dispatch: Dispatcher, path: string = ""): DataProps {
+const _storeToProps = memoize(function(
+	state: State,
+	dispatch: Dispatcher,
+	path: string = ""
+): DataProps {
 	const onBlur = () => dispatch({ type: "blur", path });
 	const onFocus = () => dispatch({ type: "focus", path });
 	if (isPrimitiveState(state)) {
@@ -18,11 +25,11 @@ function _storeToProps(state: State, dispatch: Dispatcher, path: string = ""): D
 		};
 	} else {
 		const children = mapValues(state.children, (childState, key) =>
-			storeToProps(childState, dispatch, pathAppend(path, key))
+			_storeToProps(childState, dispatch, pathAppend(path, key))
 		);
 		if (isArrayState(state)) {
 			return {
-				data: toJSON(state),
+				data: stateToJson(state),
 				children,
 				order: state.order,
 				onBlur,
@@ -30,11 +37,11 @@ function _storeToProps(state: State, dispatch: Dispatcher, path: string = ""): D
 			};
 		} else {
 			return {
-				data: toJSON(state),
+				data: stateToJson(state),
 				children,
 				onBlur,
 				onFocus
 			};
 		}
 	}
-}
+});

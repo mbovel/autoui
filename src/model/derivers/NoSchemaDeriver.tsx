@@ -13,7 +13,7 @@ import { Deriver } from "../Deriver";
 import * as React from "react";
 import { Auto } from "../../ui/Auto";
 
-export function schemaLessDeriver(UI: Components): Deriver {
+export function NoSchemaDeriver(UI: Components): Deriver {
 	const renderObject = (props: ObjectProps) => {
 		const children = Object.entries(props.children).map(([key, childProps]) => (
 			<Auto {...childProps} key={key} />

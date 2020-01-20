@@ -1,9 +1,9 @@
-const path = require("path")
-const CompressionPlugin = require('compression-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
 	mode: 'production',
 	resolve: {
+		symlinks: false,
 		alias: {
 			"react": "preact/compat",
 			"react-dom/test-utils": "preact/test-utils",
@@ -11,6 +11,24 @@ module.exports = {
 			// Must be below test-utils
 		},
 	},
-	plugins: [new CompressionPlugin()],
+	module: {
+		rules: [
+			{
+				test: /\.m?js$/,
+				exclude: /(node_modules|bower_components)/,
+				use: {
+					loader: 'babel-loader',
+					options: {
+						presets: ['@babel/preset-env'],
+						plugins: [
+							["@babel/plugin-transform-react-jsx", {
+							}]
+						]
+					}
+				}
+			}
+		],
+	},
+	plugins: [new BundleAnalyzerPlugin({ analyzerMode: "static", openAnalyzer: false })],
 	devtool: '#source-map',
 }

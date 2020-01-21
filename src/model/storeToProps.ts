@@ -1,4 +1,4 @@
-import { pathAppend, Primitive, memoize } from "./utils";
+import { pathAppend, Primitive, memoize, pathLast, titleCase } from "./utils";
 import { DataProps } from "../ui/Props";
 import { State, isPrimitiveState, stateToJson, isArrayState } from "./State";
 import mapValues from "lodash/mapValues";
@@ -14,6 +14,8 @@ const _storeToProps = memoize(function(
 	dispatch: Dispatcher,
 	path: string = ""
 ): DataProps {
+	console.log("StoreToProps: derive " + path);
+	const label = titleCase(pathLast(path));
 	const onBlur = () => dispatch({ type: "blur", path });
 	const onFocus = () => dispatch({ type: "focus", path });
 	if (isPrimitiveState(state)) {
@@ -21,7 +23,9 @@ const _storeToProps = memoize(function(
 			data: state.value,
 			onChange: (value: Primitive) => dispatch({ type: "set", path, data: value }),
 			onBlur,
-			onFocus
+			onFocus,
+			label,
+			_path: path
 		};
 	} else {
 		const children = mapValues(state.children, (childState, key) =>
@@ -33,14 +37,18 @@ const _storeToProps = memoize(function(
 				children,
 				order: state.order,
 				onBlur,
-				onFocus
+				onFocus,
+				label,
+				_path: path
 			};
 		} else {
 			return {
 				data: stateToJson(state),
 				children,
 				onBlur,
-				onFocus
+				onFocus,
+				label,
+				_path: path
 			};
 		}
 	}

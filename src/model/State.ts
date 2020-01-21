@@ -1,4 +1,12 @@
-import { ensure, JSONType, JSONObject, JSONArray, Primitive, isPrimitive } from "./utils";
+import {
+	ensure,
+	JSONType,
+	JSONObject,
+	JSONArray,
+	Primitive,
+	isPrimitive,
+	isDefined
+} from "./utils";
 import { Action } from "./Action";
 import toPath from "lodash/toPath";
 import isArray from "lodash/isArray";
@@ -37,7 +45,7 @@ export type StateOf<D extends JSONType = JSONType> = [D] extends [Primitive]
 export type State = PrimitiveState | ObjectState | ArrayState;
 
 export function isPrimitiveState(state: State): state is PrimitiveState {
-	return (state as any).value;
+	return isDefined((state as any).value);
 }
 
 export function isArrayState(state: State): state is ArrayState {

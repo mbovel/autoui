@@ -1,4 +1,4 @@
-import { stateFromJson, touch } from "./State";
+import { stateFromJson, touch, isPrimitiveState } from "../../src/model/State";
 
 describe("fromJson", () => {
 	test("correctly converts string", () => {
@@ -15,6 +15,12 @@ describe("fromJson", () => {
 
 	test("correctly converts object", () => {
 		expect(stateFromJson({ prop1: 1, prop2: 2 })).toMatchSnapshot();
+	});
+});
+
+describe("isPrimitiveState", () => {
+	test("returns true for an empty string state", () => {
+		expect(isPrimitiveState({ value: "" })).toBe(true);
 	});
 });
 

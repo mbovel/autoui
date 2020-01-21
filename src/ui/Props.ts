@@ -19,12 +19,13 @@ export interface BaseDataProps<D> {
 	selected?: boolean;
 	selectable?: boolean;
 
-	onFocus: () => void;
-	onBlur: () => void;
+	onFocus?: () => void;
+	onBlur?: () => void;
 
 	// TODO: should this really be here?
 	_render?(props: this): ReactElement;
 	_component?: ComponentType<this>;
+	_path?: string;
 }
 
 export interface PrimitiveProps<D extends Primitive = Primitive> extends BaseDataProps<D> {

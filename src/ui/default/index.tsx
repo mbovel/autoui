@@ -3,6 +3,7 @@ import { Components } from "../Components";
 import classNames from "classnames";
 import { ReactElement, ReactNode } from "react";
 import { UIError, SelectProps } from "../Props";
+import pick from "lodash/pick";
 
 interface Options {
 	inputClass?: string;
@@ -17,6 +18,19 @@ interface Options {
 		errors: ReactNode
 	) => ReactElement;
 }
+
+const inputProps = [
+	"title",
+	"name",
+	"id",
+	"className",
+	"disabled",
+	"readonly",
+	"required",
+	"autofocus",
+	"onFocus",
+	"onBlur"
+] as const;
 export function makeFormComponents(
 	opts: Options
 ): Pick<
@@ -24,89 +38,84 @@ export function makeFormComponents(
 	"TextInput" | "NumberInput" | "Checkbox" | "TextArea" | "DateInput" | "Select"
 > {
 	return {
-		TextInput: ({ onChange, onFocus, onBlur, errors, className, label, data }) => (
+		TextInput: ({ onChange, errors, className, label, data, ...props }) => (
 			<>
 				{opts.renderInput(
 					<input
+						{...pick(props, inputProps)}
 						value={data}
 						type="text"
 						className={classNames(className, opts.inputClass, {
 							[opts.errorInputClass]: errors?.length
 						})}
 						onChange={onChange && (e => onChange(e.target.value))}
-						onFocus={onFocus}
-						onBlur={onBlur}
 					/>,
 					label,
 					errorsList(errors)
 				)}
 			</>
 		),
-		NumberInput: ({ onChange: set, onFocus, onBlur, errors, className, label, data }) => (
+		NumberInput: ({ onChange: set, errors, className, label, data, ...props }) => (
 			<>
 				{opts.renderInput(
 					<input
+						{...pick(props, inputProps)}
 						value={data}
 						type="number"
 						className={classNames(className, opts.inputClass, {
 							[opts.errorInputClass]: errors?.length
 						})}
 						onChange={set && (e => set(parseFloat(e.target.value)))}
-						onFocus={onFocus}
-						onBlur={onBlur}
 					/>,
 					label,
 					errorsList(errors)
 				)}
 			</>
 		),
-		Checkbox: ({ onChange, onFocus, onBlur, errors, className, label, data }) => (
+		Checkbox: ({ onChange, errors, className, label, data, ...props }) => (
 			<>
 				{opts.renderInput(
 					<input
+						{...pick(props, inputProps)}
 						type="checkbox"
 						checked={data}
 						className={classNames(className, opts.checkboxClass, {
 							[opts.errorInputClass]: errors?.length
 						})}
 						onChange={onChange && (e => onChange(e.target.checked))}
-						onFocus={onFocus}
-						onBlur={onBlur}
 					/>,
 					label,
 					errorsList(errors)
 				)}
 			</>
 		),
-		TextArea: ({ onChange, onFocus, onBlur, errors, className, label, data }) => (
+		TextArea: ({ onChange, errors, className, label, data, ...props }) => (
 			<>
 				{opts.renderInput(
 					<textarea
+						{...pick(props, inputProps)}
 						value={data}
 						className={classNames(className, opts.textAreaClass, {
 							[opts.errorInputClass]: errors?.length
 						})}
 						onChange={onChange && (e => onChange(e.target.value))}
-						onFocus={onFocus}
-						onBlur={onBlur}
 					/>,
 					label,
 					errorsList(errors)
 				)}
 			</>
 		),
-		DateInput: ({ onChange, onFocus, onBlur, errors, className, label, data }) => (
+		DateInput: ({ onChange, errors, className, label, data, ...props }) => (
 			<>
 				{opts.renderInput(
 					<input
+						{...pick(props, inputProps)}
 						value={data}
 						type="date"
 						className={classNames(className, opts.inputClass, {
 							[opts.errorInputClass]: errors?.length
 						})}
 						onChange={onChange && (e => onChange(e.target.value))}
-						onFocus={onFocus}
-						onBlur={onBlur}
 					/>,
 					label,
 					errorsList(errors)
@@ -115,24 +124,22 @@ export function makeFormComponents(
 		),
 		Select: <D extends string>({
 			onChange,
-			onFocus,
-			onBlur,
 			errors,
 			className,
 			label,
 			options,
-			data
+			data,
+			...props
 		}: SelectProps<D>) => (
 			<>
 				{opts.renderInput(
 					<select
+						{...pick(props, inputProps)}
 						value={data}
 						className={classNames(className, opts.selectClass, {
 							[opts.errorInputClass]: errors?.length
 						})}
 						onChange={onChange && (e => onChange(e.target.value as D))}
-						onFocus={onFocus}
-						onBlur={onBlur}
 					>
 						{Object.entries(options).map(([key, label]) => (
 							<option key={key} value={key}>

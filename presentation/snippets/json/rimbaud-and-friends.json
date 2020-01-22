@@ -1,0 +1,21 @@
+{
+    "firstname": "Arthur",
+    "lastname": "Rimbaud",
+    "age": 37,
+    "isAdult": true,
+    "isDead": true,
+    "friends": [{
+        "firstName": "Paul",
+        "lastName": "Verlaine"
+    }, {
+        "firstName": "Georges",
+        "lastName": "Izambard"
+    }, {
+        "firstName": "Makonnen",
+        "lastname": "Wolde Mikael"
+    }, {
+        "firstName": "Paul",
+        "lastname": "Demeny"
+    }],
+    "details": { "something": "" }
+}

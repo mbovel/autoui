@@ -12,3 +12,4 @@ export { uikitComponents } from "./ui/uikit";
 export { Auto } from "./ui/Auto";
 
 export { relaxngToJsonSchema } from "./relaxng-to-json-schema/relaxngToJsonSchema";
+export { actionToString } from "./model/Action";

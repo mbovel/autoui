@@ -42,3 +42,16 @@ export type Action =
 	| {
 			type: "redo";
 	  };
+
+export function actionToString(action: Action) {
+	switch (action.type) {
+		case "set":
+			return `Set ${action.path} to ${JSON.stringify(action.data)}`;
+		case "insertAfter":
+			return `Add ${JSON.stringify(action.data)} in ${action.path} at ${action.index} `;
+		case "remove":
+			return `Remove ${JSON.stringify(action.key)} from ${action.path}`;
+		case "sort":
+			return `Sort ${JSON.stringify(action.path)}`;
+	}
+}

@@ -9,7 +9,9 @@ import {
 	useAutomergeStore,
 	relaxngToJsonSchema,
 	JsonSchemaDeriver,
-	getInitialData
+	getInitialData,
+	storeToCommands,
+	actionToString
 } from "../src";
 import ReactDOM from "react-dom";
 import React, { useState, ReactNode, memo } from "react";
@@ -114,7 +116,7 @@ function Form({
 }) {
 	const store = useStore(initialState);
 	const props = derive(storeToProps(store), store.dispatch);
-	//const commands = storeToCommands(store.state, store.dispatch);
+	const commands = storeToCommands(store.state, store.dispatch);
 
 	console.log("--------------------------");
 	console.log("Start rendering");
@@ -132,11 +134,18 @@ function Form({
 					showContent="◀︎"
 					initialOpened={true}
 				>
-					<h1>History</h1>
 					<h1>State (debug)</h1>
 					<div id="state-debug">
 						<StateView state={store.state} />
 					</div>
+					<h1>History</h1>
+					<button onClick={commands.undo}>Undo</button>
+					<button onClick={commands.redo}>Redo</button>
+					<ul>
+						{store.history.reverse().map(it => (
+							<li>{actionToString(it.action)}</li>
+						))}
+					</ul>
 				</Collapsable>
 			</div>
 		</>

@@ -1,5 +1,6 @@
 import { Dispatcher } from "./Dispatcher";
 import { State } from "./State";
+import { Action } from "./Action";
 
 export interface Store {
 	dispatch: Dispatcher;
@@ -8,5 +9,6 @@ export interface Store {
 }
 
 export type StoreHistory = Array<{
-	message: string;
+	action: Action;
+	user: string;
 }>;

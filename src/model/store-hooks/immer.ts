@@ -1,30 +1,55 @@
-import { useReducer, useRef, Ref } from "react";
+import { useReducer, useRef } from "react";
 import { State, mutateState } from "../State";
 import { Store } from "../Store";
 import { Action } from "../Action";
-import { produce, Patch } from "immer";
+import { produce, Patch, applyPatches } from "immer";
+
+type ImmerLog = Array<{
+	patches: Patch[];
+	inversePatches: Patch[];
+	action: Action;
+	user: string;
+}>;
 
 export function useImmerStore(initialState: State): Store {
-	const changes: Ref<Patch[]> = useRef([]);
-	const inverseChanges: Ref<Patch[]> = useRef([]);
+	const history: ImmerLog = useRef([]).current;
+	const future: ImmerLog = useRef([]).current;
 
 	const [state, dispatch] = useReducer((prevState: State, action: Action) => {
 		switch (action.type) {
 			case "undo":
-				return prevState;
+				const previous = history.pop();
+				if (!previous) return prevState;
+				future.push(previous);
+				return applyPatches(prevState, previous.inversePatches);
 			case "redo":
-				return prevState;
+				const next = future.pop();
+				if (!next) return prevState;
+				history.push(next);
+				return applyPatches(prevState, next.patches);
 			default:
 				return produce(
 					prevState,
 					(draft: State) => mutateState(draft, action),
 					(patches, inversePatches) => {
-						changes.current!.push(...patches);
-						inverseChanges.current!.push(...inversePatches);
+						if (
+							action.type === "set" ||
+							action.type === "insertAfter" ||
+							action.type === "remove" ||
+							action.type === "sort"
+						) {
+							history.push({
+								patches,
+								inversePatches,
+								user: "me",
+								action
+							});
+						}
+						future.length = 0;
 					}
 				);
 		}
 	}, initialState);
 
-	return { state, dispatch, history: [] };
+	return { state, dispatch, history };
 }

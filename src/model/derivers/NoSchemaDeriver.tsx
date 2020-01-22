@@ -4,7 +4,8 @@ import {
 	isNumberProps,
 	isBooleanProps,
 	ObjectProps,
-	ArrayProps
+	ArrayProps,
+	isObjectProps
 } from "../../ui/Props";
 import { Components } from "../../ui/Components";
 import { Deriver } from "../Deriver";
@@ -14,7 +15,14 @@ import mapValues from "lodash/mapValues";
 import { memoize } from "../utils";
 
 export function NoSchemaDeriver(UI: Components): Deriver {
-	function renderBranch(props: ObjectProps | ArrayProps) {
+	function renderObject(props: ObjectProps) {
+		const children = Object.entries(props.children).map(([key, childProps]) => (
+			<Auto {...childProps} key={key} />
+		));
+		if (props.label) return <UI.Section title={props.label}>{children}</UI.Section>;
+		else return <>{children}</>;
+	}
+	function renderArray(props: ObjectProps | ArrayProps) {
 		const children = Object.entries(props.children).map(([key, childProps]) => (
 			<Auto {...childProps} key={key} />
 		));
@@ -32,10 +40,16 @@ export function NoSchemaDeriver(UI: Components): Deriver {
 			return { ...props, _component: UI.NumberInput };
 		} else if (isBooleanProps(props)) {
 			return { ...props, _component: UI.Checkbox };
+		} else if (isObjectProps(props)) {
+			return {
+				...props,
+				_render: renderObject,
+				children: mapValues(props.children, child => derive(child))
+			};
 		} else {
 			return {
 				...props,
-				_render: renderBranch,
+				_render: renderArray,
 				children: mapValues(props.children, child => derive(child))
 			};
 		}

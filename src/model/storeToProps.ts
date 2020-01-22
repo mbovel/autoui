@@ -1,9 +1,9 @@
-import { pathAppend, Primitive, memoize, pathLast, titleCase } from "./utils";
-import { DataProps } from "../ui/Props";
+import { pathAppend, Primitive, memoize, pathLast, titleCase, JSONType } from "./utils";
+import { DataProps, DataPropsOf } from "../ui/Props";
 import { State, isPrimitiveState, stateToJson, isArrayState } from "./State";
 import mapValues from "lodash/mapValues";
 import { Dispatcher } from "./Dispatcher";
-import { Store } from "./Store";
+import { Store, StoreOf } from "./Store";
 
 export function storeToProps(store: Store): DataProps {
 	return _storeToProps(store.state, store.dispatch);
@@ -53,3 +53,7 @@ const _storeToProps = memoize(function(
 		}
 	}
 });
+
+export const typedStoreToProps: <D extends JSONType>(
+	store: StoreOf<D>
+) => DataPropsOf<D> = _storeToProps as any;

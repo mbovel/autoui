@@ -1,8 +1,9 @@
 import { useReducer, useRef } from "react";
-import { State, mutateState } from "../State";
-import { Store } from "../Store";
+import { State, mutateState, StateOf } from "../State";
+import { Store, StoreOf } from "../Store";
 import { Action } from "../Action";
 import { produce, Patch, applyPatches } from "immer";
+import { JSONType } from "../utils";
 
 type ImmerLog = Array<{
 	patches: Patch[];
@@ -11,6 +12,8 @@ type ImmerLog = Array<{
 	user: string;
 }>;
 
+export function useImmerStore<D extends JSONType>(initialState: StateOf<D>): StoreOf<D>;
+export function useImmerStore(initialState: State): Store;
 export function useImmerStore(initialState: State): Store {
 	const history: ImmerLog = useRef([]).current;
 	const future: ImmerLog = useRef([]).current;

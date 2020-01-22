@@ -21,7 +21,7 @@ const derive = NoSchemaDeriver(defaultComponents)
 function App() {
 	const store = useImmerStore(initialState)
 	const props = derive(storeToProps(store), store.dispatch)
-	const commands = storeToCommands(store.state, store.dispatch)
+	const commands = storeToCommands(store)
 
 	return <main>
 		<form><Auto {...props} /></form>

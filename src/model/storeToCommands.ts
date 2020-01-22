@@ -1,10 +1,9 @@
-import { Dispatcher } from "./Dispatcher";
 import { Commands } from "./Commands";
-import { State } from "./State";
+import { Store } from "./Store";
 
-export function storeToCommands(state: State, dispatch: Dispatcher): Commands {
+export function storeToCommands(store: Store): Commands {
 	return {
-		undo: () => dispatch({ type: "undo" }),
-		redo: () => dispatch({ type: "redo" })
+		undo: () => store.dispatch({ type: "undo" }),
+		redo: () => store.dispatch({ type: "redo" })
 	};
 }

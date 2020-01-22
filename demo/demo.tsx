@@ -69,12 +69,6 @@ const deriverConfigs = {
 				age: 37,
 				isAdult: true,
 				isDead: true,
-				/*friends: [
-					{ firstName: "Paul", lastName: "Verlaine" },
-					{ firstName: "Georges", lastName: "Izambard" },
-					{ firstName: "Makonnen", lastname: "Wolde Mikael" },
-					{ firstName: "Paul", lastname: "Demeny" }
-				],*/
 				details: {
 					something: ""
 				}
@@ -116,7 +110,7 @@ function Form({
 }) {
 	const store = useStore(initialState);
 	const props = derive(storeToProps(store), store.dispatch);
-	const commands = storeToCommands(store.state, store.dispatch);
+	const commands = storeToCommands(store);
 
 	console.log("--------------------------");
 	console.log("Start rendering");

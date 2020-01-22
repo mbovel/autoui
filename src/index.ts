@@ -2,6 +2,7 @@ export { useImmerStore } from "./model/store-hooks/immer";
 export { useAutomergeStore } from "./model/store-hooks/automerge";
 
 export { NoSchemaDeriver } from "./model/derivers/NoSchemaDeriver";
+export { getInitialData, JsonSchemaDeriver } from "./model/derivers/JsonSchemaDeriver";
 export { storeToProps } from "./model/storeToProps";
 export { storeToCommands } from "./model/storeToCommands";
 export { stateToJson, stateFromJson } from "./model/State";

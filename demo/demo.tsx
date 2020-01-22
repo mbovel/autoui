@@ -7,7 +7,9 @@ import {
 	Auto,
 	uikitComponents,
 	useAutomergeStore,
-	relaxngToInitialJson
+	relaxngToJsonSchema,
+	JsonSchemaDeriver,
+	getInitialData
 } from "../src";
 import ReactDOM from "react-dom";
 import React, { useState, ReactNode, memo } from "react";
@@ -81,11 +83,20 @@ const deriverConfigs = {
 	},
 	relaxng: {
 		name: "RelaxNG",
-		getInitialState: (data: string) => stateFromJson(relaxngToInitialJson(data)),
-		makeDeriver: (data: string, UI: Components) => NoSchemaDeriver(UI),
+		getInitialState: (data: string) => stateFromJson(getInitialData(relaxngToJsonSchema(data))),
+		makeDeriver: (data: string, UI: Components) =>
+			JsonSchemaDeriver(UI, relaxngToJsonSchema(data)),
 		deriverDataName: "RelaxNG Schema",
 		deriverDataType: "markup",
 		initialDeriverData: "<hello></hello>"
+	},
+	jsonschema: {
+		name: "Json Schema",
+		getInitialState: (data: string) => stateFromJson(getInitialData(JSON.parse(data))),
+		makeDeriver: (data: string, UI: Components) => JsonSchemaDeriver(UI, JSON.parse(data)),
+		deriverDataName: "Json Schema",
+		deriverDataType: "javascript",
+		initialDeriverData: "{}"
 	}
 } as const;
 
@@ -218,7 +229,9 @@ function App() {
 				/>
 			) : (
 				<div id="result">
-					<form>Sorry, I cannot make sense of deriver data ({deriverDataName})…</form>
+					<form>
+						<p>Sorry, I cannot make sense of deriver data ({deriverDataName})…</p>
+					</form>
 				</div>
 			)}
 		</>

@@ -6,7 +6,8 @@ import {
 	stateFromJson,
 	Auto,
 	uikitComponents,
-	useAutomergeStore
+	useAutomergeStore,
+	relaxngToInitialJson
 } from "../src";
 import ReactDOM from "react-dom";
 import React, { useState, ReactNode, memo } from "react";
@@ -59,10 +60,17 @@ const deriverConfigs = {
 		deriverDataType: "javascript",
 		initialDeriverData: JSON.stringify(
 			{
-				firstname: "",
-				lastname: "",
-				age: 25,
+				firstname: "Arthur",
+				lastname: "Rimbaud",
+				age: 37,
 				isAdult: true,
+				isDead: true,
+				/*friends: [
+					{ firstName: "Paul", lastName: "Verlaine" },
+					{ firstName: "Georges", lastName: "Izambard" },
+					{ firstName: "Makonnen", lastname: "Wolde Mikael" },
+					{ firstName: "Paul", lastname: "Demeny" }
+				],*/
 				details: {
 					something: ""
 				}
@@ -73,7 +81,7 @@ const deriverConfigs = {
 	},
 	relaxng: {
 		name: "RelaxNG",
-		getInitialState: (data: string) => stateFromJson({}),
+		getInitialState: (data: string) => stateFromJson(relaxngToInitialJson(data)),
 		makeDeriver: (data: string, UI: Components) => NoSchemaDeriver(UI),
 		deriverDataName: "RelaxNG Schema",
 		deriverDataType: "markup",
@@ -154,7 +162,8 @@ function App() {
 	try {
 		derive = makeDeriver(deriverData, UI);
 		initialState = getInitialState(deriverData);
-	} catch {
+	} catch (e) {
+		console.error(e);
 		derive = undefined;
 		initialState = undefined;
 	}
@@ -209,7 +218,7 @@ function App() {
 				/>
 			) : (
 				<div id="result">
-					Sorry, I cannot make sense of deriver data ({deriverDataName})…
+					<form>Sorry, I cannot make sense of deriver data ({deriverDataName})…</form>
 				</div>
 			)}
 		</>
@@ -290,14 +299,12 @@ const StateView = memo(({ state }: { state: State }) => {
 			{state.focusedBy?.length ? <span className="active badge">active</span> : undefined}
 			{!isPrimitiveState(state) && (
 				<dl>
-					{Object.entries(state.children).map(([key, value]) => (
-						<>
-							<dt>{key}: </dt>
-							<dd>
-								<StateView state={value} />
-							</dd>
-						</>
-					))}
+					{Object.entries(state.children).flatMap(([key, value]) => [
+						<dt key={key + ".key"}>{key}: </dt>,
+						<dd key={key + ".content"}>
+							<StateView state={value} />
+						</dd>
+					])}
 				</dl>
 			)}
 		</>

@@ -9,3 +9,5 @@ export { stateToJson, stateFromJson } from "./model/State";
 export { defaultComponents } from "./ui/default";
 export { uikitComponents } from "./ui/uikit";
 export { Auto } from "./ui/Auto";
+
+export { relaxngToJsonSchema } from "./relaxng-to-json-schema/relaxngToJsonSchema";

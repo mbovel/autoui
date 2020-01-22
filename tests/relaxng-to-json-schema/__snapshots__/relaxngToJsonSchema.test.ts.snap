@@ -1,0 +1,164 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`relaxngToJsonSchema correctly converts example 1 1`] = `
+Object {
+  "items": Object {
+    "properties": Object {
+      "email": Object {
+        "title": "email",
+        "type": "string",
+      },
+      "name": Object {
+        "title": "name",
+        "type": "string",
+      },
+    },
+    "title": "card",
+    "type": "object",
+  },
+  "title": "addressBook",
+  "type": "array",
+}
+`;
+
+exports[`relaxngToJsonSchema correctly converts example 2 1`] = `
+Object {
+  "items": Object {
+    "properties": Object {
+      "email": Object {
+        "title": "email",
+        "type": "string",
+      },
+      "name": Object {
+        "title": "name",
+        "type": "string",
+      },
+    },
+    "title": "card",
+    "type": "object",
+  },
+  "minItems": 1,
+  "title": "addressBook",
+  "type": "array",
+}
+`;
+
+exports[`relaxngToJsonSchema correctly converts example 3 1`] = `
+Object {
+  "items": Object {
+    "properties": Object {
+      "email": Object {
+        "title": "email",
+        "type": "string",
+      },
+      "name": Object {
+        "title": "name",
+        "type": "string",
+      },
+      "note": Object {
+        "title": "note",
+        "type": "string",
+      },
+    },
+    "title": "card",
+    "type": "object",
+  },
+  "title": "addressBook",
+  "type": "array",
+}
+`;
+
+exports[`relaxngToJsonSchema correctly converts example 4 1`] = `
+Object {
+  "items": Object {
+    "properties": Object {
+      "email": Object {
+        "title": "email",
+        "type": "string",
+      },
+      "noName16": Object {
+        "oneOf": Array [
+          Object {
+            "title": "name",
+            "type": "string",
+          },
+          Object {
+            "properties": Object {
+              "familyName": Object {
+                "title": "familyName",
+                "type": "string",
+              },
+              "givenName": Object {
+                "title": "givenName",
+                "type": "string",
+              },
+            },
+            "title": undefined,
+            "type": "object",
+          },
+        ],
+        "properties": Object {
+          "autoui:choice": Object {
+            "enum": Array [
+              0,
+              1,
+            ],
+            "type": "number",
+          },
+        },
+        "title": undefined,
+      },
+      "note": Object {
+        "title": "note",
+        "type": "string",
+      },
+    },
+    "title": "card",
+    "type": "object",
+  },
+  "title": "addressBook",
+  "type": "array",
+}
+`;
+
+exports[`relaxngToJsonSchema correctly converts example 5 1`] = `
+Object {
+  "items": Object {
+    "properties": Object {
+      "email": Object {
+        "title": "email",
+        "type": "string",
+      },
+      "name": Object {
+        "title": "name",
+        "type": "string",
+      },
+    },
+    "title": "card",
+    "type": "object",
+  },
+  "title": "addressBook",
+  "type": "array",
+}
+`;
+
+exports[`relaxngToJsonSchema correctly converts example 6 1`] = `
+Object {
+  "items": Object {
+    "properties": Object {
+      "Email": Object {
+        "title": "Email",
+        "type": "string",
+      },
+      "Name": Object {
+        "title": "Name",
+        "type": "string",
+      },
+    },
+    "title": "Card",
+    "type": "object",
+  },
+  "title": undefined,
+  "type": "array",
+}
+`;

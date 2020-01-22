@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<meta charset="UTF-8" />
+<title>Vue Errors</title>
+<style>
+	.errors {
+		font-size: small;
+		color: red;
+	}
+</style>
+
+<form>
+	<p>
+		<label>
+			First name: <input type="text" v-model="firstname" />
+			<span class="errors" v-if="!isFirstNameValid">Invalid name.</span>
+		</label>
+	</p>
+	<p>
+		<label>Is adult: <input type="checkbox" v-model="isAdult" /></label>
+	</p>
+	<p v-if="isAdult">
+		<button>Buy absinthe, opium and hashish.</button>
+	</p>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+	new Vue({
+		el: 'form',
+		data: { firstname: "Arthur", isAdult: false, },
+		computed: { isFirstNameValid() { return /[A-Z][a-z]*/.test(this.firstname) } }
+	});
+</script>
+
+</html>

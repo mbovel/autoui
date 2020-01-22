@@ -8,11 +8,11 @@
 module.exports = {
   title: 'AutoUI',
   tagline: 'Automatic User Interface generation from schemas',
-  url: 'https://mbovel.github.io/allui',
-  baseUrl: '/allui/',
+  url: 'https://mbovel.github.io/autoui',
+  baseUrl: '/autoui/',
   favicon: 'img/favicon.ico',
   organizationName: 'mbovel', // Usually your GitHub org/user name.
-  projectName: 'allui', // Usually your repo name.
+  projectName: 'autoui', // Usually your repo name.
   themeConfig: {
     navbar: {
       title: 'AutoUI',
@@ -20,7 +20,7 @@ module.exports = {
         { to: 'docs/intro', label: 'Docs', position: 'left' },
         { to: 'playground', label: 'Playground', position: 'left' },
         {
-          href: 'https://github.com/facebook/docusaurus',
+          href: 'https://github.com/mbovel/autoui',
           label: 'GitHub',
           position: 'right',
         },

@@ -1,6 +1,7 @@
 body {
 	margin: 0;
 	font-family: sans-serif;
+	background-color: #fff;
 }
 
 html,
@@ -21,7 +22,7 @@ body {
 	flex-grow: 1;
 }
 
-#result {
+#result form {
 	margin: 4rem auto;
 	max-width: 30rem;
 }
@@ -55,13 +56,16 @@ body {
 	margin-left: auto;
 }
 
-#state,
 #config {
-	background-color: #eee;
+	border-right: 1px solid rgb(218, 221, 225);
+}
+
+#state {
+	border-left: 1px solid rgb(218, 221, 225);
 }
 
 .opened {
-	width: 20rem;
+	width: 22rem;
 	padding: 1rem;
 }
 
@@ -69,10 +73,7 @@ body {
 	width: 4rem;
 }
 
-.deriver-data,
 #state-debug {
-	background-color: #fff !important;
-	border: 1px solid #e5e5e5;
 	padding: 10px;
 }
 

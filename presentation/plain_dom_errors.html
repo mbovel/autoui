@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<meta charset="UTF-8" />
+<title>Plain Dom Errors</title>
+<style>
+	.hidden {
+		display: none
+	}
+
+	.errors {
+		font-size: small;
+		color: red;
+	}
+</style>
+
+<form>
+	<p>
+		<label>
+			First name: <input type="text" value="Arthur" id="firstname" />
+			<span id="firstname_errors" class="hidden errors">Invalid name.</span>
+		</label>
+	</p>
+	<p>
+		<label>Is adult: <input type="checkbox" id="isAdult" /></label>
+	</p>
+	<p>
+		<button id="buy" class="hidden">Buy absinthe, opium and hashish.</button>
+	</p>
+</form>
+
+<script>
+	const firstNameErrorsEl = document.querySelector("#firstname_errors");
+	document.querySelector("#firstname").addEventListener("input", (e) => {
+		if (!/[A-Z][a-z]*/.test(e.target.value)) firstNameErrorsEl.classList.remove("hidden");
+		else firstNameErrorsEl.classList.add("hidden");
+	})
+	const buttonEl = document.querySelector("#buy")
+	document.querySelector("#isAdult").addEventListener("change", (e) => {
+		if (e.target.checked) buttonEl.classList.remove("hidden");
+		else buttonEl.classList.add("hidden");
+	})
+</script>
+
+</html>

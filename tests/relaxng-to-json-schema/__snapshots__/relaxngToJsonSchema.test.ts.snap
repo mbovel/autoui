@@ -97,15 +97,6 @@ Object {
             "type": "object",
           },
         ],
-        "properties": Object {
-          "autoui:choice": Object {
-            "enum": Array [
-              0,
-              1,
-            ],
-            "type": "number",
-          },
-        },
         "title": undefined,
       },
       "note": Object {

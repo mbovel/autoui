@@ -28,11 +28,7 @@ function convert(el: Element, root: Document): [string, JSONSchema7] {
 			schema = convertChildren(el.children, root);
 			break;
 		case "choice":
-			const choices = [...el.children].map(c => convert(c, root)[1]);
-			schema = {
-				properties: { "autoui:choice": { type: "number", enum: [...choices.keys()] } },
-				oneOf: choices
-			};
+			schema = { oneOf: [...el.children].map(c => convert(c, root)[1]) };
 			break;
 		case "grammar":
 			schema = convertChildren(find(root, "start").children, root);

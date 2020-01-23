@@ -1,6 +1,7 @@
 body {
 	margin: 0;
 	font-family: sans-serif;
+	background-color: #fff;
 }
 
 html,
@@ -21,7 +22,7 @@ body {
 	flex-grow: 1;
 }
 
-#result {
+#result form {
 	margin: 4rem auto;
 	max-width: 30rem;
 }
@@ -64,7 +65,7 @@ body {
 }
 
 .opened {
-	width: 20rem;
+	width: 22rem;
 	padding: 1rem;
 }
 

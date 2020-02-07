@@ -58,6 +58,8 @@
 		"demo:build": "webpack --config=demo/webpack.config.js",
 		"demo:build:watch": "webpack --config=demo/webpack.config.js --watch",
 		"demo:build:analyse": "webpack --config=demo/webpack.config.js --profile --json > dist/stats.json && webpack-bundle-analyzer dist/stats.json",
+		"pres:typed:build:watch": "webpack --config=presentation/snippets/strongly-typed-props/webpack.config.js --watch",
+		"pres:react:build:watch": "webpack --config=presentation/snippets/react/webpack.config.js --watch",
 		"test": "jest",
 		"build": "tsc"
 	},

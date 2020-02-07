@@ -1,0 +1,17 @@
+{
+	"oneOf": [
+		{
+			"type": "object",
+			"properties": {
+				"age": { "type": "string" }
+			},
+			"title": "test"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"age2": { "type": "string" }
+			}
+		}
+	]
+}

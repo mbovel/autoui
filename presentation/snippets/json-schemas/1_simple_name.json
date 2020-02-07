@@ -1,0 +1,5 @@
+{
+	"type": "string",
+	"title": "Name",
+	"format": "[A-Z][a-z]*"
+}

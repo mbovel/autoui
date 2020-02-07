@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<meta charset="UTF-8" />
+<title>Web Components</title>
+
+<script>
+	class XSquare extends HTMLElement {
+		connectedCallback() {
+			const shadow = this.attachShadow({ mode: 'open' });
+			const div = document.createElement("div");
+			shadow.appendChild(div);
+			div.setAttribute("style", `width: ${this.getAttribute("width")}px;
+									   height: ${this.getAttribute("width")}px;
+									   background-color: pink;`)
+		}
+	}
+	customElements.define('x-square', XSquare);
+</script>
+
+<x-square width="100"></x-square>
+
+</html>

@@ -6,6 +6,6 @@ This is the code of my semester project done at EPFL in autumn 2019. The repo is
 
 See:
 
-- [Playground](https://mbovel.github.io/autoui/playground)
-- [Final presentation](https://docs.google.com/presentation/d/1ROqfj31E4LhuXtZKXkmfGrK6nkNwR9wwSiEMyGBDNYE/edit?usp=sharing)
-- [Website](https://mbovel.github.io/autoui/) (which will eventually contain some documentation )
+-   [Playground](https://mbovel.github.io/autoui/playground)
+-   [Final presentation](https://docs.google.com/presentation/d/1ROqfj31E4LhuXtZKXkmfGrK6nkNwR9wwSiEMyGBDNYE/edit?usp=sharing)
+-   [Website](https://mbovel.github.io/autoui/) (which will eventually contain some documentation 😉)

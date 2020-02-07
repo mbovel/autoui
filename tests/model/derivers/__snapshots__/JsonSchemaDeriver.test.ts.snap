@@ -1,0 +1,141 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JsonSchemaDeriver correctly converts example 4 1`] = `
+Object {
+  "_component": [Function],
+  "_path": "",
+  "add": [Function],
+  "children": Object {
+    "0": Object {
+      "_path": "0",
+      "_render": [Function],
+      "children": Object {
+        "email": Object {
+          "_component": [Function],
+          "_path": "0.email",
+          "data": "",
+          "label": "email",
+          "onBlur": [Function],
+          "onChange": [Function],
+          "onFocus": [Function],
+        },
+        "noName16": Object {
+          "_path": "0.noName16",
+          "_render": [Function],
+          "children": Object {
+            "$choice0": Object {
+              "_component": [Function],
+              "_path": "0.noName16.$choice0",
+              "data": "",
+              "label": "name",
+              "onBlur": [Function],
+              "onChange": [Function],
+              "onFocus": [Function],
+            },
+            "$selectedChoice": Object {
+              "_path": "0.noName16.$selectedChoice",
+              "data": "0",
+              "label": "Selected choice",
+              "onBlur": [Function],
+              "onChange": [Function],
+              "onFocus": [Function],
+            },
+          },
+          "data": Object {
+            "$choice0": "",
+            "$choice1": Object {
+              "familyName": "",
+              "givenName": "",
+            },
+            "$selectedChoice": "0",
+          },
+          "label": "No name 16",
+          "onBlur": [Function],
+          "onFocus": [Function],
+        },
+        "note": Object {
+          "_component": [Function],
+          "_path": "0.note",
+          "data": "",
+          "label": "note",
+          "onBlur": [Function],
+          "onChange": [Function],
+          "onFocus": [Function],
+        },
+      },
+      "data": Object {
+        "email": "",
+        "noName16": Object {
+          "$choice0": "",
+          "$choice1": Object {
+            "familyName": "",
+            "givenName": "",
+          },
+          "$selectedChoice": "0",
+        },
+        "note": "",
+      },
+      "label": "card",
+      "onBlur": [Function],
+      "onFocus": [Function],
+    },
+  },
+  "data": Array [
+    Object {
+      "email": "",
+      "noName16": Object {
+        "$choice0": "",
+        "$choice1": Object {
+          "familyName": "",
+          "givenName": "",
+        },
+        "$selectedChoice": "0",
+      },
+      "note": "",
+    },
+  ],
+  "label": "addressBook",
+  "onBlur": [Function],
+  "onFocus": [Function],
+  "order": Array [
+    "0",
+  ],
+  "remove": Object {
+    "0": [Function],
+  },
+}
+`;
+
+exports[`JsonSchemaDeriver correctly converts example 7 1`] = `
+Object {
+  "_path": "",
+  "_render": [Function],
+  "children": Object {
+    "$choice0": Object {
+      "_component": [Function],
+      "_path": "$choice0",
+      "data": "",
+      "label": "age",
+      "onBlur": [Function],
+      "onChange": [Function],
+      "onFocus": [Function],
+    },
+    "$selectedChoice": Object {
+      "_path": "$selectedChoice",
+      "data": "0",
+      "label": "Selected choice",
+      "onBlur": [Function],
+      "onChange": [Function],
+      "onFocus": [Function],
+    },
+  },
+  "data": Object {
+    "$choice0": "",
+    "$choice1": "",
+    "$selectedChoice": "0",
+  },
+  "label": undefined,
+  "onBlur": [Function],
+  "onFocus": [Function],
+}
+`;

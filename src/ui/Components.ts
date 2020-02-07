@@ -4,7 +4,7 @@
 
 /** Imports */
 import { ComponentType, PropsWithChildren, ReactElement, ReactNode } from "react";
-import { InputProps, SectionProps, SelectProps } from "./Props";
+import { InputProps, SectionProps, SelectProps, ArrayProps } from "./Props";
 
 /*
  * UI Components
@@ -24,4 +24,5 @@ export interface Components {
 	Section: ComponentType<SectionProps>;
 	Row: ComponentType<{ children: ReactNode }>;
 	Column: ComponentType<{ children: ReactNode }>;
+	List: ComponentType<ArrayProps>;
 }

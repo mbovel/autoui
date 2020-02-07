@@ -19,6 +19,7 @@ export function useImmerStore(initialState: State): Store {
 	const future: ImmerLog = useRef([]).current;
 
 	const [state, dispatch] = useReducer((prevState: State, action: Action) => {
+		console.log("Dispatch: " + JSON.stringify(action));
 		switch (action.type) {
 			case "undo":
 				const previous = history.pop();

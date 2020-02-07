@@ -120,7 +120,7 @@ function get(state: State, path: any): State {
 
 function getChildState(state: State, key: string): State {
 	ensure(isBranchState(state), "Cannot get child of primitive.");
-	ensure(key in state.children);
+	ensure(key in state.children, `${key} does not exist`);
 	return state.children[key];
 }
 

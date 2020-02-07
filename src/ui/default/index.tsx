@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { ReactElement, ReactNode } from "react";
 import { UIError, SelectProps } from "../Props";
 import pick from "lodash/pick";
+import { Auto } from "../Auto";
 
 interface Options {
 	inputClass?: string;
@@ -186,6 +187,18 @@ export const defaultComponents: Components = {
 		<section>
 			<h1>{title}</h1>
 			{children}
+		</section>
+	),
+	List: ({ remove, children, label }) => (
+		<section>
+			<h1>{label}</h1>
+			{Object.entries(children).map(([key, childProps]) => (
+				<>
+					{remove?.[key] && <button onClick={remove[key]}>Remove</button>}
+					<Auto {...(childProps as any)} />
+					<hr />
+				</>
+			))}
 		</section>
 	)
 };

@@ -110,3 +110,9 @@ export function memoize<F extends (...args: A) => R, A extends any[], R>(
 		return result;
 	}, fn);
 }
+
+let uniqueKey = 0;
+export function getUniqueKey(keys: string[]): string {
+	while (keys.includes(uniqueKey.toString())) ++uniqueKey;
+	return uniqueKey.toString();
+}

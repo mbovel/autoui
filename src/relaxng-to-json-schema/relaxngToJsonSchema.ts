@@ -1,4 +1,4 @@
-import { ensure } from "../model/utils";
+import { ensure, titleCase } from "../model/utils";
 import { JSONSchema7 } from "json-schema";
 
 const AUNS = "https://github.com/mbovel/autoui";
@@ -54,6 +54,7 @@ function convert(el: Element, root: Document): [string, JSONSchema7] {
 	const key =
 		el.getAttribute("name") ?? el.getAttributeNS(AUNS, "key") ?? `noName${++noNameCounter}`;
 	schema.title = el.getAttribute("name") ?? el.getAttributeNS(AUNS, "title") ?? undefined;
+	schema.title = schema.title ? titleCase(schema.title) : undefined;
 	return [key, schema];
 }
 
@@ -110,3 +111,33 @@ function isElement(node: Node): node is Element {
 function parseXML(string: string) {
 	return new DOMParser().parseFromString(string, "text/xml");
 }
+
+interface Schema {
+	props: {
+		[key: string]: Schema | string | (() => Schema);
+	};
+}
+
+type DataOf<S extends Schema> = {
+	[K in keyof S["props"]]: S["props"][K] extends () => any
+		? DataOf<ReturnType<S["props"][K]>>
+		: S["props"][K] extends Schema
+		? DataOf<S["props"][K]>
+		: S["props"][K];
+};
+
+const s2 = {
+	props: {
+		hello: "world",
+		nested: () => s1
+	}
+};
+
+const s1 = {
+	props: {
+		hello2: "world",
+		nested: s2
+	}
+};
+
+export type foo = DataOf<typeof s1>;

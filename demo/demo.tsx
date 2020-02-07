@@ -58,8 +58,8 @@ type StoreID = keyof typeof storeConfigs;
 const deriverConfigs = {
 	noSchema: {
 		name: "No Schema",
-		getInitialState: (data: string) => stateFromJson(JSON.parse(data)),
-		makeDeriver: (_: string, UI: Components) => NoSchemaDeriver(UI),
+		makeDeriverAndInitialState: (data: string, UI: Components) =>
+			[NoSchemaDeriver(UI), stateFromJson(JSON.parse(data))] as const,
 		deriverDataName: "Initial JSON",
 		deriverDataType: "javascript",
 		initialDeriverData: JSON.stringify(
@@ -79,17 +79,20 @@ const deriverConfigs = {
 	},
 	relaxng: {
 		name: "RelaxNG",
-		getInitialState: (data: string) => stateFromJson(getInitialData(relaxngToJsonSchema(data))),
-		makeDeriver: (data: string, UI: Components) =>
-			JsonSchemaDeriver(UI, relaxngToJsonSchema(data)),
+		makeDeriverAndInitialState: (data: string, UI: Components) => {
+			const schema = relaxngToJsonSchema(data);
+			return [JsonSchemaDeriver(UI, schema), stateFromJson(getInitialData(schema))] as const;
+		},
 		deriverDataName: "RelaxNG Schema",
 		deriverDataType: "markup",
 		initialDeriverData: "<hello></hello>"
 	},
 	jsonschema: {
 		name: "Json Schema",
-		getInitialState: (data: string) => stateFromJson(getInitialData(JSON.parse(data))),
-		makeDeriver: (data: string, UI: Components) => JsonSchemaDeriver(UI, JSON.parse(data)),
+		makeDeriverAndInitialState: (data: string, UI: Components) => {
+			const schema = JSON.parse(data);
+			return [JsonSchemaDeriver(UI, schema), stateFromJson(getInitialData(schema))] as const;
+		},
 		deriverDataName: "Json Schema",
 		deriverDataType: "javascript",
 		initialDeriverData: "{}"
@@ -108,12 +111,11 @@ function Form({
 	initialState: State;
 	derive: Deriver;
 }) {
+	console.log("--------------------------");
+	console.log("Start Form");
 	const store = useStore(initialState);
 	const props = derive(storeToProps(store), store.dispatch);
 	const commands = storeToCommands(store);
-
-	console.log("--------------------------");
-	console.log("Start rendering");
 	return (
 		<>
 			<div id="result">
@@ -136,8 +138,8 @@ function Form({
 					<button onClick={commands.undo}>Undo</button>
 					<button onClick={commands.redo}>Redo</button>
 					<ul>
-						{store.history.reverse().map(it => (
-							<li>{actionToString(it.action)}</li>
+						{store.history.reverse().map((it, key) => (
+							<li key={key}>{actionToString(it.action)}</li>
 						))}
 					</ul>
 				</Collapsable>
@@ -160,8 +162,7 @@ function App() {
 		deriverDataType,
 		deriverDataName,
 		initialDeriverData,
-		makeDeriver,
-		getInitialState
+		makeDeriverAndInitialState
 	} = deriverConfigs[deriverId];
 
 	const [_deriverData, setDeriverData] = useState<string | undefined>(initialDeriverData);
@@ -174,8 +175,7 @@ function App() {
 	let derive: Deriver | undefined;
 	let initialState: State | undefined;
 	try {
-		derive = makeDeriver(deriverData, UI);
-		initialState = getInitialState(deriverData);
+		[derive, initialState] = makeDeriverAndInitialState(deriverData, UI);
 	} catch (e) {
 		console.error(e);
 		derive = undefined;

@@ -18,6 +18,7 @@ export interface BaseDataProps<D> {
 	active?: boolean;
 	selected?: boolean;
 	selectable?: boolean;
+	touched?: boolean;
 
 	onFocus?: () => void;
 	onBlur?: () => void;
@@ -42,8 +43,8 @@ export interface ArrayProps<D extends JSONArray = JSONArray> extends BaseDataPro
 	order: string[];
 	selectScope?: boolean;
 
-	insertAfter?(index: number, value: D[number]): void;
-	remove?(key: string): void;
+	add?: (() => void) | { [choice: string]: () => void };
+	remove?: { [key: string]: () => void };
 	sort?(comparator: (a: D[number], b: D[number]) => number): void;
 }
 

@@ -1,0 +1,8 @@
+<choice>
+  <element name="age">
+    <text />
+  </element>
+  <element name="age2">
+    <text />
+  </element>
+</choice>

@@ -5,18 +5,18 @@ Object {
   "items": Object {
     "properties": Object {
       "email": Object {
-        "title": "email",
+        "title": "Email",
         "type": "string",
       },
       "name": Object {
-        "title": "name",
+        "title": "Name",
         "type": "string",
       },
     },
-    "title": "card",
+    "title": "Card",
     "type": "object",
   },
-  "title": "addressBook",
+  "title": "Address book",
   "type": "array",
 }
 `;
@@ -26,19 +26,19 @@ Object {
   "items": Object {
     "properties": Object {
       "email": Object {
-        "title": "email",
+        "title": "Email",
         "type": "string",
       },
       "name": Object {
-        "title": "name",
+        "title": "Name",
         "type": "string",
       },
     },
-    "title": "card",
+    "title": "Card",
     "type": "object",
   },
   "minItems": 1,
-  "title": "addressBook",
+  "title": "Address book",
   "type": "array",
 }
 `;
@@ -48,22 +48,22 @@ Object {
   "items": Object {
     "properties": Object {
       "email": Object {
-        "title": "email",
+        "title": "Email",
         "type": "string",
       },
       "name": Object {
-        "title": "name",
+        "title": "Name",
         "type": "string",
       },
       "note": Object {
-        "title": "note",
+        "title": "Note",
         "type": "string",
       },
     },
-    "title": "card",
+    "title": "Card",
     "type": "object",
   },
-  "title": "addressBook",
+  "title": "Address book",
   "type": "array",
 }
 `;
@@ -73,23 +73,23 @@ Object {
   "items": Object {
     "properties": Object {
       "email": Object {
-        "title": "email",
+        "title": "Email",
         "type": "string",
       },
       "noName16": Object {
         "oneOf": Array [
           Object {
-            "title": "name",
+            "title": "Name",
             "type": "string",
           },
           Object {
             "properties": Object {
               "familyName": Object {
-                "title": "familyName",
+                "title": "Family name",
                 "type": "string",
               },
               "givenName": Object {
-                "title": "givenName",
+                "title": "Given name",
                 "type": "string",
               },
             },
@@ -100,14 +100,14 @@ Object {
         "title": undefined,
       },
       "note": Object {
-        "title": "note",
+        "title": "Note",
         "type": "string",
       },
     },
-    "title": "card",
+    "title": "Card",
     "type": "object",
   },
-  "title": "addressBook",
+  "title": "Address book",
   "type": "array",
 }
 `;
@@ -117,18 +117,18 @@ Object {
   "items": Object {
     "properties": Object {
       "email": Object {
-        "title": "email",
+        "title": "Email",
         "type": "string",
       },
       "name": Object {
-        "title": "name",
+        "title": "Name",
         "type": "string",
       },
     },
-    "title": "card",
+    "title": "Card",
     "type": "object",
   },
-  "title": "addressBook",
+  "title": "Address book",
   "type": "array",
 }
 `;
@@ -151,5 +151,21 @@ Object {
   },
   "title": undefined,
   "type": "array",
+}
+`;
+
+exports[`relaxngToJsonSchema correctly converts example 7 1`] = `
+Object {
+  "oneOf": Array [
+    Object {
+      "title": "Age",
+      "type": "string",
+    },
+    Object {
+      "title": "Age 2",
+      "type": "string",
+    },
+  ],
+  "title": undefined,
 }
 `;

@@ -15,7 +15,7 @@ export type Action =
 			type: "insertAfter";
 			path: string;
 			key: string;
-			index: number;
+			index?: number;
 			data: State;
 	  }
 	| {
